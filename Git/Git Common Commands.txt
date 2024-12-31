@@ -1,0 +1,62 @@
+Most Common Git Commands:
+	git config --global user.name "first_name last_name"
+		They are used to set the names at a global level for all the repositories
+	
+	git config --global user.email "email@gmail.com"
+		They are used to set the user's email at a global level for all the repositories
+	
+	git config --global color.ui auto
+		They are used to set the color for the ui
+	
+	git init
+		Initialize the current directory as a git repository
+	
+	git clone [URL]
+		It is used to download the files in the given URL into the current folder 
+	
+	git status
+		The command shows all the modified files in the current directory that is suited for the next commit
+		
+	git add
+		They are used to add the modified files into the staged part of the git repository
+		
+	git commit
+		The command is used to commit the staged changes into the local repository as a new commit snapshot, we can provide the explicit message using "git commit -m "MESSAGE""
+		
+	git pull
+		Fetch and merge the changes from the remote branch into the current local branch
+	
+	git push
+		The branch pushes the changes from the current local branch into remote repository's branch 
+		
+	git branch
+		Lists all the branches that is present in the current repository
+		
+	git branch [NEW_BRANCH_NAME]
+		It creates a new branch called "NEW_BRANCH_NAME" 
+	
+	git switch "BRANCH_NAME"
+		It switches to a new branch called "BRANCH_NAME". It is similar or an alternative to git checkout BRANCH_NAME command 
+	
+	git checkout
+		It has multiple usanges based on the flag used to checkout a certain branch
+		By default the git checkout command simply performs the same functionality
+	
+	git merge OTHER_BRANCH_NAME
+		It is used to merge the OTHER_BRANCH_NAME into the current working branch 	
+	
+	git reset
+		Unstage a file that is present in the stage area back into the working directory 
+	
+	git log
+		It displayes the commit history for the current active branch
+	
+	git stash
+		Save the staged and modified changes into a stack like storage.
+		We can multiple stashes in our working repository and each stash has an unique name @stash@{0}
+	
+	git checkout -b new-branch
+		It creates a new branch and automatically switches to the new branch
+	
+	git checkout new-branch
+		It simply switches to the new branch
