@@ -1,0 +1,911 @@
+Errors:
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.luv2code.springcoredemo.rest.DemoController required a bean of type 'com.luv2code.util.Coach' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.luv2code.util.Coach' in your configuration.
+
+
+Chatgpt project advice:
+	Beginner Level Projects
+		Simple REST API
+			Create a basic REST API to manage a collection of resources, such as a list of books or users.
+			Implement CRUD operations (Create, Read, Update, Delete).
+			Use an in-memory database like H2 for simplicity.
+			
+		To-Do List Application
+			Build a simple to-do list application.
+			Allow users to add, view, update, and delete tasks.
+			Use Thymeleaf for server-side rendering of the front end.
+			
+		User Authentication System
+			Implement a basic user registration and login system.
+			Use Spring Security for authentication and authorization.
+			Store user credentials in an H2 database.
+			
+	Intermediate Level Projects
+		Blog Application
+			Develop a blog platform where users can create, edit, delete, and view blog posts.
+			Implement user authentication and authorization.
+			Use a relational database like MySQL or PostgreSQL for data storage.
+			
+		E-commerce Application
+			Create a basic e-commerce platform with product listings, a shopping cart, and checkout functionality.
+			Implement user authentication and order management.
+			Integrate with a payment gateway (e.g., Stripe or PayPal).
+			
+		Weather Application
+			Build an application that fetches weather data from a public API (e.g., OpenWeatherMap).
+			Allow users to search for the current weather in different cities.
+			Cache weather data to reduce the number of API calls.
+			
+	Advanced Level Projects
+		Microservices Architecture
+			Create a set of microservices for a complex application (e.g., an online marketplace).
+			Implement services for user management, product catalog, order processing, and payment.
+			Use Spring Cloud for service discovery, configuration management, and communication.
+			
+		Social Media Platform
+			Develop a social media platform with features like user profiles, posts, comments, likes, and follows.
+			Implement real-time notifications using WebSockets.
+			Use Elasticsearch for searching posts and profiles.
+			
+		Online Learning Platform
+			Build an online learning platform with courses, quizzes, and progress tracking.
+			Implement user roles (e.g., students, instructors, admins).
+			Use a combination of relational and NoSQL databases for different data storage needs.
+			Integrate video streaming for course content.
+
+For Projects see specific notes section
+
+Doubts:
+What is the use of @Entity
+	Indicates a class is an entity
+	They map to the database
+	They allow mapping of the Java objects to the database tables
+	
+What is the use of @GeneratedValue and strategy parameter
+	Used along with @Id
+	Used to generate the id based on various parameters:
+		AUTO: The persistence provider (Hibernate) gives the strategy. Default strategy is None.
+		IDENTITY: Auto-Increment the column to generate the primary key value
+		SEQUENCE: Uses a database sequence - generate unique values
+		TABLE: Table is used to generate unique values
+		
+What is the use of getters and setters
+	Controlled Access of objects or variables
+	Essential part of encapsulation - ensuring internal state is modified in controlled ways
+	Uses:
+		Encapsulation of the access of data
+			Direct access: exposes the data structure of the object to the end service calls. Hence any change needs to change everything from the calling objects as well.
+			Getter and setter: They only expose the public interface to the end service calls. Hence, any change only needs to update the variables used into the interface and not the structure
+		Validation and control:
+			No validation or logic can be added into the direct access of the objects
+		Lazy Loading / Computed Properties:
+			Lazy Loading is the concept of loading some variable or property only when they are needed.
+			With direct access the objects are always loaded at any given time - which leads to massive memory consumption
+			Whereas with the getters and setters could be resisted as not all the properties are loaded during the object load time
+		Read only or Write only properties:
+			With direct access either read only or write only could be performed 
+			With getters and setters we can control to have public getters and private setters controlling the accessibility.
+		Debugging / Logging:
+			You can perform debugging and logging using getters and setters which you cannot perform with normal direct access
+		Polymorphism:
+			You can overrride the properties that have been defined using a getter and setter whereas in direct access you cannot override the properties
+		Backward Compatibility:
+			If you expose an object via direct access and then in the future decide to add some logic then you need to go over and update each of the calls and structure to support the new supported method and all the calls that are to be done to the method.
+			If you have a getter and setter already you could directly update it for easier updates.
+		
+	
+Why do we need this.id - is this needed in Java as well
+	this keyword is used to access the instance variables 
+	Helps in distinguishing the instance variables from the method variables 
+	
+Why does creating RestAPI need - Spring Web, Spring Data JPA, H2 Database
+	Not strictly needed - can use other technologies to - develop, persist and manage data
+	But their purpose are:
+	Spring Web:
+		Purpose: infrastructure to build web application such as RESTful Web Services
+		Features: Simplifies creation of REST endpoints, request handling and response generation
+		Alternatives: Apache Struts, Jersey or custom-built solution
+	Spring Data JPA: 
+		Purpose: Simplify database access and management - Java Persistence API
+		Features: Provides repository abstraction, CRUD operatiosn, query methods
+		Alternatives: Hibernate, MyBatis, JDBC
+	H2 Database:
+		Purpose: An in-memory database - development and testing purposes
+		Features: in-memory database - fast and easy
+		Alternative: MySQL, PostgreSQL, Cassandra, and MongoDB
+		
+		What is the difference between In-memory and normal databases?
+			The primary difference between an in-memory and a normal database is that the in-memory database completely stores the data in the RAM whereas the traditional database store in the hard disk and retrieve and store when the access is needed.
+			
+			Speed:
+				In-Memory: Much Faster since the data is stored in the RAM
+				Traditional: Much slower since the access needs to go to the disk and retrieve the data back.
+			
+			Persistence:
+				In-memory: By default the data is not persisted but some databases like Redis and Memcached could persist the data through snapshots, logs etc to periodically save them. During crashes the default In-memory dbs lose the data in the memory, whereas in Redis all the data stored in memory from the previous crash are lost. 
+				Traditional: They store and persist the data by the nature of it. The data is retained from the disk and most databases prevent data loss from crashes.
+			
+			Scalability:
+				In-memory: They are not scalable due to the low memory in the RAM unless we perform sharding to tiered storage.
+				Traditional: They are scalable since the memory is outsourced to an hard disk.
+			
+			ACID compliance:
+				In-memory: Most In-memory lack ACID compliance while some - Redis and Memcached are ACID compliant
+				Traditional: They are by nature ACID compliant.
+
+When to create Interface and Classes
+	Why to create interface:
+		Defining Contracts - one common set of methods for all the classes/interfaces that work on this underneath
+		Decoupling implementation from the usage - So that whenever you change the implementation you need to worry about the original implementation
+		Multiple Implementations - When multiple classes have same set of implementation - define an interface - promotes polymorhphishm and allows interchangeable components
+		Enhancing Testability - Help in creating unit tests - create mock implementations for the methods
+	
+	When to create classes:
+		Represent real-world entities: To deal with real-world items and represent their relationship
+		Encapsulation: Storing the variables and methods in one block - Promotes data security and protected access
+		Reusability and inheritance: The code in the parent class can be reused in the subclasses or the functionality could be overridden in them
+		Concrete implementation: When the parent class needs to have concrete implementation instead of abstract implementation as in interfaces
+		Design flexible, maintainbable, and scalable applications
+	
+Difference between JpaRepository and JpaRepository<Book, Long> when to use the 2nd one
+	JpaRepository - Interface providing genereic CRUD operations
+	JpaRepository<Book, Long> - Creating an interface with the type as Book and the type of key as 'Long'
+	
+When we use @Autowired in a field in class 1 that refers to Class 2. Should we have any additional annotation in the Class 2 for it.
+	Whenever we have @Autowired at a field, constructor, or method - the parameter is searched in application context - and if it is found the instance is loaded into the usage in the expected class
+	
+Why return bookRepository.findById(id) throws error but return bookRepository.findById(id).orElse(null); does not in Book Service Class
+	The bookRepository.findById(id) returns an Optional<T>
+	The Optional<Book> maybe returns a null or non-null 
+	But sometimes this could return a null - which could cause a null pointer exception
+	This could be avoided - by explicitly returning the type Book - which would return an object Book or null	
+	
+What is the importance of autowiring - why cant we just 
+	Need to study again
+	
+Why Restcontroller
+	It is a specialized annotation that combines @Controller and @ResponseBody
+	It is used to take in the Request url and then give a response by default using @ResponseBody
+	@RestController indicate the class is a Restful API
+	@RequestMapping("/books") Indicates the common URL for all the paths
+	@GetMapping(), @PostMapping(), @DeleteMapping
+	@PathVariable is used to extract data from the URI
+	@RequestBody is used to convert the input object into domain object
+	
+Why RequestMapping("")
+	They are used to define the path the service is stored in
+	
+What is @PathVariable
+	They are used to extract some value based on the variable or path mentioned in the URI
+	
+What is @RequestBody
+	They are used to bind the HTTP request body into domain object
+
+Ways to autowire the objects?
+	@Primary
+	@Qualifier
+	Cofiguration classes - using name of the class
+	Custom Qualifier Class - creating using @Interface, @Retention(RetentionPolicy.RUNTIME)
+
+If I was previously working on a spring project in Intellij IDE and have its server running. Now if I simply open another spring project in another folder will the previous server be also running
+	If you are opening the project in a new window - the older project and server is maintained to be running
+	If you are opening the project in the same window - the older project and server could be running if the newer project runs at a new port number - mentioned in the configuration
+		The previous server stops to run only when we manually stop it
+
+what if I have a server running in port 8001 in window 1 and now I open up a new project in a new window in port 8001 again. How will both the server co-exist since I have the same port number.
+	If you do so you will get an Address already in use use error:
+		org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat server
+		...
+		Caused by: java.net.BindException: Address already in use: bind
+	You can rectify this issue - by defining a newer port number in the second project in applicaiton.properties or application.yml
+
+What is the use of separate packages like - controller, model, repository, and service
+	They are used to implement separation of concerns
+	They are used to separate the functionalities of each sets of classes:
+	Controller: An interface between the web and the application - Annotations - @Restcontroller and @Controller
+	Model: The classes are considered to be tables in the database - Annotations - @Entity
+	Repository: The classes act as an interface between the applicaiton and database - Annotations - @JpaRepository and @CRUDRepository
+	Service: The class act as service class that handles the functions of the calls made at the controller - Annotations - @Service
+	
+When dealing with a boolean variable "Completed" in the @Entity file should we explicitly setCompletedTrue() and setCompletedFalse or should we do one method called flipCompleted() by checking the current value of "Completed" variable
+	The first method is more explicit, clear but the only con is more verbose - using 2 method for 1 action
+	The second mehtod is lesser in number of lines but could cause errors and be less explicit
+	The first method is more preferred - if lots of actions need to be done and complicated conditions needs to be checked
+	The second method is preferred when the condition is simple
+
+Error when trying to add thymeleaf to handle with templates
+Error: https://stackoverflow.com/questions/31944355/error-resolving-template-index-template-might-not-exist-or-might-not-be-acces
+	Solution: I am new to spring spent an hour trying to figure this out.
+
+			go to --- > application.properties
+
+			add these :
+
+			spring.thymeleaf.prefix=classpath:/templates/
+			spring.thymeleaf.suffix=.html
+
+What is the use of pom.xml
+	It is used to define the configuration of the project used by Maven, a build automation tool. They are used to define the following details:
+		Project Information
+		Dependencies
+		Build Information (Plugins)
+		Repositories
+		Profiles
+
+what is the use of .gitignore
+	They are used to define the files that need to be ignored by git version control. The type of files or folders are:
+		Build output directories (target/, bin/)
+		Dependency directories (node_modules/)
+		Configuration file - sensitive information (application.properties)
+		system-specific files (.DS_store, Thumbs.db)
+	
+
+What is the use of HELP.md
+	They are used to define the resources to handle the spring projects
+
+What is the use of mvnw
+	This a shell script to run the maven code using a maven wrapper.
+	They are useful in running with a maven version that is consistent to the project instead of the common maven version.
+
+What is the use of mvnw.cd
+	This is a batch script to run the maven code using a maven wrapper.
+	This is same as mvnw but to run in windows
+
+What are files of .md why not use .txt
+	These are markdown files
+	They can be converted into html and be displayed in the platforms like Github
+	
+What is a wrapper
+	A wrapper is software that is built on top of an existing software to provide additional functionalities
+		The project can run on the local version of the maven
+		Developers can start working on project without manually installing the maven
+		The project details could be added in the version control - making the build environment reproducible
+	How maven-wrapper works
+		When you run ./mvnw clean install it tries to run the maven 
+		But if there is no maven installed already - search from maven-wrapper.properties
+		Now based on this version run the ./mvnw clean install
+
+What is String.class
+
+When to use int and when Integer? what is the difference?
+
+What is the use of RestTemplate? Do we have any other alternatives
+
+What advantage int[] have over ArrayList
+
+ArrayList<int> arr = new ArrayList<int>(); what does <int> does and what does () does
+
+Java Syntax:
+
+ArrayList:
+
+	ArrayList<Integer> arr = new ArrayList<Integer>();
+	ArrayList<String> strArr = new ArrayList<String>();
+
+	Methods:
+	arr.add(5) //Adding a value
+	arr.add(6) // [5,6]
+	arr.add(8) // [5,6,8]
+	arr.add(2,7) // [5,6,7,8]
+	arr.set(2,9) // Setting (Replacing) value at a particular index
+	arr.size() //4 (Finding size of the ArrayList
+
+	Looping through:
+	Method 1:
+		for( int i=0 ; i<arr.size() ; i++ ){
+			sout( arr[i] );
+		}
+
+	Method 2:
+		for( int val : arr ) {
+			sout( val );
+		}
+
+	Sort:
+		Method 1:
+			import java.util.Collections;
+			
+			Collections.sort( arr );
+		
+		Method 2:
+			arr.sort( null ) // Default sorting method - if strings alphabetical, if numbers in ascending order
+			arr.sort( Comparator comparator ) // Using the comparator 
+
+	lastIndexOf() -> int
+
+	arr.add(6) // [ 5, 6, 9, 8, 6, 8 ]
+	arr.add(8) // [ 5, 6, 9, 8, 6, 8 ]
+
+	arr.lastIndexOf(6) //4
+
+	indexOf() -> int
+	arr.indexOf(6) // 1
+
+	contains() -> boolean
+
+	if( arr.contains(5) ) -> True
+
+	clone() -> Object
+
+	ArrayList<String> arr2 = (ArrayList) arr.clone();
+
+	toArray() -> Object[]
+
+	Object[] arrArray = arr.toArray();
+
+	subList() -> List<int>
+
+	List<int> arrList = arr.subList();
+
+Array:
+	
+	int[] arr = new int[5];
+	arr[0] = 1
+	arr[2] = 3
+	
+	int[] arr2 = { 2, 5, 8, 2, 1 }
+	
+String:
+	
+
+Questions to answer:
+What does basic Spring security add to the spring project?
+	By default providing spring security does the following to the project:
+		Generates an automatic login page
+		You cannot execute post requests anymore
+		The application is on lockdown and prompts you to enter a username and password
+
+What is Spring Security?
+	Spring Security is really just a bunch of servlet filters that help you add authentication and authorization to your web application
+	It integrates well with Spring boot
+	Integrates well with standards like Oauth, or SAML
+	Auto-generates login logout pages
+	Protects the webpages from CSRF
+	
+What is a servlet?
+	It is simply a program that you run on the server side
+
+What is difference between authentication and authorization?
+	Authentication verifies if the person who enters or tries to login is the intended person or not
+	Authorization verifies the role or control the person who logged in has - For eg: An user could simply view the webpages while an admin could control and change the webpages
+	
+
+What are servlet filters?
+	https://www.marcobehler.com/guides/spring-security#authentication-explained
+	
+What is a filter?
+
+General architecture of the end to end spring naive security filter process:
+	Client -> Security Filter -> Dispatcher Servlet @Controlller and @RestController
+	
+	Class SecurityFilter extends HttpFilter{
+	
+		void doFilter( HttpServletRequest request, HttpServletResponse response, HttpFilter filter ){
+		
+			extractUsernameAndPassword( request )
+			
+			notAuthenticated( token )
+			
+			notAuthorized( token, request )
+			
+			chain.doFilter( request, response )
+		}		
+		
+	}
+	
+	The structure could big in this naive architecture for security filter - hence an improvement to divide the monster filter into few smaller components
+		LoginMethodFilter
+		AuthenticationFilter
+		AuthorizationFilter
+		
+	chain.doFilter( request, response )
+	
+What is Spring Boot BOM ( Bill of Materials)
+
+What is gradle?
+	What is build.gradle, gradlew.bat, and gradlew files used for
+		build.gradle contains the configurations that are available for the spring boot applicaiton
+		gradlew is used in mac and linux to start a springboot applicaiton
+		gradlew.bat is used in windows to start a springboot applicaiton
+	
+	What does the command ./gradlew.bat clean build do
+		clean	
+			It is used to remove all the files that are present in the /build folder
+		
+		build 
+			It is used to build the files back into the /build folder
+			It recompiles the files, runs the unit tests, and 
+
+Difference between WAR and JAR?
+	.jar and .war extensions
+	.jar is to package multiple files into library, plugin, or any kind of application
+	.war is used only for web applications
+	
+Difference between library, plugin and framework?
+	Library:
+		Provides reusable code to perform a specific tasks
+		You control when to use a particular library
+		Standalone in nature and not dependent on any host systems
+		eg: Numpy
+		for solving specific problems
+	
+	Plugin:
+		Provides additional functionality to the application 
+		integrated into a host applicatoin
+		The plugin is dependent on the host system or application to work properly
+		Eg: Intellij IDEA plugins
+		for adding the utilities of the host application
+	
+	Framework:
+		Provides a way to build structure application 
+		It controls the flow and you fit your code into it;s structure
+		Stands on it's own as the base of the application
+		Spring, Django, Angular
+		For building complete appllications
+
+Spring data redis vs spring data Reactive Redis 
+
+Dependencies for rate limiter
+	starter web: To allow a web based java applications facilitating api calls in a request response model
+	data redis 
+	Lombok
+	Devtools
+	Actuator
+
+What does @Bean and @Autowired do?
+	@Bean on a method would mean that hte method creates and returns a Spring Bean of a specific type. Then this bean could be used by any other spring containers using some other annotations like @Autowired, @Inject
+		The bean is then stored in a global place called Spring Application Context which I believe is like a global storage point.
+	@Autowired is used to inject the dependency into your local method or variable.
+		This finds the relevant Spring object from the Spring Application Context and then stores into the variable or method's parameter 
+	
+	Please read this thread for the following - https://chatgpt.com/share/6781fe46-b448-800b-aae7-93b2e0f6a4a9
+		What is the use of @Bean
+		What is the use of @Component, @Autowired, @Inject
+		What is the difference between @Bean, and @Component
+	
+What is @SpringBootApplication used for?
+	It is a convenience annotation that is combination of three annotations:
+		@Configuration: This is used to define a class as a @Configuration class and that this is a source of bean definitions
+		@EnableAutoConfiguration: This enables spring to automatically find the suitable beans based on the dependencies and configuration of the application
+		@ComponentScan: Component scan goes through the entire spring application and identifies the sub-packages that are spring-managed components like @Component, @Service, @Repository, @Controller
+	
+What is @EnableScheduling used for?
+	It provides the ability for Spring boot to run scheduled tasks at fixed intervals using @Scheduled annotation or cron expressions. 
+
+What is the use of 
+
+public static void main(String[] args){
+	SpringApplication.run(RateLimiter.class, args);
+}
+	Run() methods to convert the 
+		Initializes the spring context
+		Performs auto configuration
+		Starts the application if the app is a web based app then we use its own set of annotations (like controller etc) that keeps the application running.
+		
+//@AutoWired
+TokenBucketService tokenBucketService
+	We inject the TokenBucketService bean into the "tokenBucketService" and use it here
+	
+	Why is it commented:
+		The bean could be manually configured or integrated into a custom filter chain, bypassing spring's dependency injection
+		Bypassing spring's dependency injection - what does this mean
+			"Bypassing Spring's dependency injection" means that instead of letting Spring automatically manage the lifecycle and injection of a bean (using `@Autowired` or similar), you manually create or initialize the bean and manage its dependencies yourself, outside of Spring's control. 
+
+		For example:
+			TokenBucketService service = new TokenBucketService(); // Manual initialization
+			filter.setTokenBucketService(service); // Inject manually
+		
+		Here, Spring doesn't manage or inject the `TokenBucketService` into the filter.
+	
+Are servlets and controllers the same
+	No, servlets and controllers are not the same:
+
+	- Servlets: Low-level Java classes that handle HTTP requests and responses directly in a servlet container. They require manual handling of request parsing and response generation.
+	  
+	- Controllers: High-level components in frameworks like Spring MVC that abstract servlet functionality. Controllers are easier to use and focus on handling business logic, while the framework manages HTTP details behind the scenes.
+	
+What is manual registration of the bean
+	Manual registration of a bean is when you explicitly define a bean in a @Configuration class using the @Bean annotation, instead of relying on Spring's automatic component scanning.
+
+	@Bean
+	public MyService myService() {
+		return new MyService();
+	}
+
+
+Annotations List:
+	@Component
+	@Configuration
+	@AutoConfiguration
+	@ComponentScan
+	@Bean
+	@Slf4j
+	@Autowired
+	@Inject
+
+Thread safety list:
+	ConcurrentHashMap
+	BlockingQueue
+	ConcurrentLinkedDeque
+	
+Read this thread for all the questions about the RateLimiter implementation:
+	https://chatgpt.com/share/6781fe46-b448-800b-aae7-93b2e0f6a4a9
+
+@SpringBootApplication
+@EnableScheduling
+public class RateLimiterApplication {
+
+	public static void main( String args[] ){
+		SpringApplication.run( RateLimiterApplication.class, args );
+	}
+	
+	@Bean
+	public TokenBucket tokenBucket() {
+		return new TokenBucket(5);
+	}
+	
+}
+	In this context, when does the tokenBucket() get called from
+		
+		The tokenBucket() method is called when the RateLimiterApplication class is run.
+
+			Here's why:
+
+			1. The `@SpringBootApplication` annotation is used to mark a class as a Spring Boot application.
+			2. The `@EnableScheduling` annotation enables Spring's scheduling functionality in the application.
+			3. The `main(String[] args)` method is the entry point of the application.
+			4. When the `SpringApplication.run(RateLimiterApplication.class, args)` method is called, it starts the Spring Boot application.
+			5. The `@Bean` annotation tells Spring Boot that the `tokenBucket()` method creates a bean.
+			6. A bean is an object that is managed by the Spring container.
+			7. Spring Boot will call the bean creation methods (annotated with `@Bean`) when it starts the application.
+			8. Therefore, the `tokenBucket()` method is called during the application startup process, typically when the main method is executed.
+
+What is use of Bean in Spring Boot?
+	In **Spring Boot**, a **bean** is an object that is managed by the Spring framework's **Inversion of Control (IoC)** container. Beans are a central concept in Spring and are used to represent the components or services in an application.
+
+	### Why Use Beans in Spring Boot?
+
+	1. **Dependency Injection (DI):**
+	   - Beans are used to enable **dependency injection**, where the framework automatically provides the required objects (dependencies) to other objects without manual instantiation.
+	   - This promotes loose coupling and enhances testability.
+
+	   **Example:**
+	   ```java
+	   @Component
+	   public class UserService {
+		   // Bean dependency injection
+		   private final UserRepository userRepository;
+
+		   public UserService(UserRepository userRepository) {
+			   this.userRepository = userRepository;
+		   }
+	   }
+	   ```
+
+	2. **Centralized Configuration:**
+	   - Beans allow you to manage object creation and lifecycle centrally, avoiding manual object creation (`new` keyword).
+
+	3. **Reusability:**
+	   - Beans are singletons by default (one instance per container), which makes them efficient and reusable throughout the application.
+
+	4. **Automatic Management:**
+	   - Spring Boot automatically detects and manages beans using annotations like `@Component`, `@Service`, and `@Repository`.
+
+	5. **Custom Initialization and Destruction:**
+	   - Beans support lifecycle methods, allowing you to define custom initialization and destruction logic using `@PostConstruct` and `@PreDestroy`.
+
+	---
+
+	### How to Define a Bean in Spring Boot?
+
+	1. **Using Stereotype Annotations:**
+	   The most common way is to use annotations such as:
+	   - `@Component`: Generic bean.
+	   - `@Service`: Represents a service layer bean.
+	   - `@Repository`: Represents a data-access layer bean.
+	   - `@Controller`/`@RestController`: Represents a web layer bean.
+
+	   **Example:**
+	   ```java
+	   @Component
+	   public class MyBean {
+		   public void doSomething() {
+			   System.out.println("Bean is working!");
+		   }
+	   }
+	   ```
+
+	2. **Using `@Bean` in Configuration Class:**
+	   You can manually define beans in a configuration class using the `@Bean` annotation.
+
+	   **Example:**
+	   ```java
+	   @Configuration
+	   public class AppConfig {
+		   @Bean
+		   public MyBean myBean() {
+			   return new MyBean();
+		   }
+	   }
+	   ```
+
+	3. **Automatically Detected Beans (Component Scanning):**
+	   If you annotate your classes with the appropriate stereotype annotations and place them in the correct package, Spring Boot will detect and manage them automatically.
+
+	---
+
+	### Accessing Beans
+	Beans can be injected using:
+	- **Field Injection**: (not recommended)
+	   ```java
+	   @Autowired
+	   private MyBean myBean;
+	   ```
+
+	- **Constructor Injection**: (recommended)
+	   ```java
+	   private final MyBean myBean;
+
+	   @Autowired
+	   public MyComponent(MyBean myBean) {
+		   this.myBean = myBean;
+	   }
+	   ```
+
+	- **Setter Injection**: (less commonly used)
+	   ```java
+	   private MyBean myBean;
+
+	   @Autowired
+	   public void setMyBean(MyBean myBean) {
+		   this.myBean = myBean;
+	   }
+	   ```
+
+	---
+
+	### Bean Scope
+	By default, a bean in Spring Boot is a **singleton** (one instance per container). However, you can change its scope using the `@Scope` annotation.
+
+	**Example of Prototype Scope:**
+	```java
+	@Component
+	@Scope("prototype")
+	public class MyPrototypeBean {
+	   // New instance is created every time
+	}
+	```
+
+	---
+
+	### Summary
+	Beans in Spring Boot are crucial for managing the application’s components and enabling dependency injection. They provide:
+	- Centralized control over object creation.
+	- Efficient reuse of resources.
+	- Clear separation of concerns.
+
+	Let me know if you'd like to explore this further or need specific examples!
+
+How beans promote loose coupling and enhances testability.
+	Beans promote **loose coupling** and enhance **testability** by abstracting object creation and dependency management through **dependency injection (DI)**. Instead of creating dependencies manually with the `new` keyword, Spring injects them into beans, making components independent of specific implementations.
+
+	### How This Helps:
+	1. **Loose Coupling**:
+	   - Beans interact through interfaces rather than concrete classes.
+	   - Swapping implementations or making changes does not affect the dependent components.
+
+	   **Example**: Replace `EmailService` with `SMSService` without modifying the consumer class:
+	   ```java
+	   @Autowired
+	   private NotificationService notificationService; // Interface
+	   ```
+
+	2. **Enhances Testability**:
+	   - Dependencies can be mocked or stubbed easily for unit testing.
+	   - No need to modify code for testing; inject mocks into the beans during tests.
+
+	   **Example**:
+	   ```java
+	   @Mock
+	   private UserRepository userRepository;
+	   @InjectMocks
+	   private UserService userService; // Injects mock dependencies
+	   ```
+
+	This approach keeps the code flexible, maintainable, and test-friendly.
+	
+ConcurrentHashMap:
+	https://www.geeksforgeeks.org/concurrenthashmap-in-java/
+	The declaration: 
+
+	```java
+	public class ConcurrentHashMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V>, Serializable
+	```
+
+	### Explanation:
+	1. **Generic Class `<K, V>`**:
+	   - `K`: Represents the type of keys in the map.
+	   - `V`: Represents the type of values in the map.
+	   - This allows the `ConcurrentHashMap` to be type-safe and work with any key-value pair types.
+
+	2. **Extends `AbstractMap<K, V>`**:
+	   - `AbstractMap` is a base class that provides a skeletal implementation of the `Map` interface.
+	   - `ConcurrentHashMap` inherits its basic functionality (e.g., key-value storage and map operations) but overrides methods to provide thread-safe operations.
+
+	3. **Implements `ConcurrentMap<K, V>`**:
+	   - `ConcurrentMap` is a subinterface of `Map` that defines additional methods for atomic operations in a concurrent environment, such as `putIfAbsent()`, `remove()`, and `replace()`.
+	   - `ConcurrentHashMap` ensures thread-safe updates and retrievals in multi-threaded environments.
+
+	4. **Implements `Serializable`**:
+	   - This enables instances of `ConcurrentHashMap` to be serialized (converted to a byte stream) so they can be transmitted over a network or saved to disk.
+
+	---
+
+	### Key Features of `ConcurrentHashMap`:
+	- Thread-safe: Multiple threads can access and modify it without requiring external synchronization.
+	- High performance: Achieved through **segmentation** (in earlier versions) or a **concurrent locking mechanism** to reduce contention.
+	- No nulls: `null` keys or values are **not allowed**.
+
+	This makes `ConcurrentHashMap` ideal for use in multi-threaded applications requiring efficient and safe data structures.
+
+how does implement and extend work? what can be implemented and what can be extend and what can implement and what can extend?
+
+	In Java, **`implements`** and **`extends`** are keywords used to define relationships between classes and interfaces. Here's a breakdown:
+
+	---
+
+	### **`extends`**
+	- Used for **inheritance**, where a class or interface derives from a parent class or interface.
+	- **What can `extend`?**
+	  1. A **class** can extend another **class** (single inheritance).
+		 - Example:
+		   ```java
+		   public class Dog extends Animal {
+			   // Dog inherits Animal's properties and methods
+		   }
+		   ```
+	  2. An **interface** can extend another **interface** (multiple inheritance for interfaces is allowed).
+		 - Example:
+		   ```java
+		   public interface Walkable extends Movable {
+			   // Walkable inherits methods from Movable
+		   }
+		   ```
+
+	- **Key Points**:
+	  - A class can extend only one class (**single inheritance**).
+	  - An interface can extend multiple interfaces.
+
+	---
+
+	### **`implements`**
+	- Used to establish a **contract** between a class and an interface. A class must provide implementations for all the methods declared in the interface.
+	- **What can `implement`?**
+	  1. A **class** can implement one or more **interfaces**.
+		 - Example:
+		   ```java
+		   public class Car implements Vehicle, Movable {
+			   // Must implement all methods from Vehicle and Movable
+		   }
+		   ```
+	  2. An **interface** can also implement nothing (just act as a contract provider).
+
+	- **Key Points**:
+	  - A class can implement multiple interfaces (like multiple inheritance).
+	  - Interfaces cannot implement anything—they can only **extend** other interfaces.
+
+	---
+
+	### Combining `extends` and `implements`
+	A class can both **extend** a class and **implement** interfaces.
+	- Example:
+	  ```java
+	  public class ElectricCar extends Vehicle implements Movable, Chargeable {
+		  // ElectricCar inherits Vehicle and implements Movable & Chargeable
+	  }
+	  ```
+
+	---
+
+	### Summary Table:
+	| Keyword      | Relationship          | Who Can Use?                  | Who Can Be Used With?       |
+	|--------------|-----------------------|-------------------------------|-----------------------------|
+	| `extends`    | Inheritance           | Classes, Interfaces           | Classes (single) or Interfaces (multiple) |
+	| `implements` | Interface Implementation | Classes                       | Interfaces                  |
+
+	Let me know if you'd like a specific example!
+
+Intellij shortcuts:
+	# IntelliJ IDEA Essential Shortcuts
+
+	## Navigation
+	| Action | Windows/Linux | Mac |
+	|--------|--------------|-----|
+	| Search Everywhere | Double Shift | Double Shift |
+	| Go to Class | Ctrl + N | Cmd + O |
+	| Go to File | Ctrl + Shift + N | Cmd + Shift + O |
+	| Go to Line | Ctrl + G | Cmd + L |
+	| Recent Files | Ctrl + E | Cmd + E |
+	| Navigate Back/Forward | Ctrl + Alt + Left/Right | Cmd + Alt + Left/Right |
+	| Find Usage | Alt + F7 | Alt + F7 |
+
+	## Editing
+	| Action | Windows/Linux | Mac |
+	|--------|--------------|-----|
+	| Basic Code Completion | Ctrl + Space | Ctrl + Space |
+	| Smart Code Completion | Ctrl + Shift + Space | Ctrl + Shift + Space |
+	| Quick Fix | Alt + Enter | Alt + Enter |
+	| Format Code | Ctrl + Alt + L | Cmd + Alt + L |
+	| Optimize Imports | Ctrl + Alt + O | Ctrl + Alt + O |
+	| Comment/Uncomment Line | Ctrl + / | Cmd + / |
+	| Duplicate Line | Ctrl + D | Cmd + D |
+	| Delete Line | Ctrl + Y | Cmd + Backspace |
+	| Move Line Up/Down | Alt + Shift + Up/Down | Alt + Shift + Up/Down |
+
+	## Refactoring
+	| Action | Windows/Linux | Mac |
+	|--------|--------------|-----|
+	| Rename | Shift + F6 | Shift + F6 |
+	| Extract Variable | Ctrl + Alt + V | Cmd + Alt + V |
+	| Extract Method | Ctrl + Alt + M | Cmd + Alt + M |
+	| Extract Parameter | Ctrl + Alt + P | Cmd + Alt + P |
+	| Extract Field | Ctrl + Alt + F | Cmd + Alt + F |
+
+	## Running & Debugging
+	| Action | Windows/Linux | Mac |
+	|--------|--------------|-----|
+	| Run | Shift + F10 | Ctrl + R |
+	| Debug | Shift + F9 | Ctrl + D |
+	| Step Over | F8 | F8 |
+	| Step Into | F7 | F7 |
+	| Resume Program | F9 | Cmd + Alt + R |
+	| Toggle Breakpoint | Ctrl + F8 | Cmd + F8 |
+
+	## Version Control
+	| Action | Windows/Linux | Mac |
+	|--------|--------------|-----|
+	| Commit Changes | Ctrl + K | Cmd + K |
+	| Update Project | Ctrl + T | Cmd + T |
+	| Show Version Control | Alt + 9 | Cmd + 9 |
+	| Push Commits | Ctrl + Shift + K | Cmd + Shift + K |
+
+	## Window Management
+	| Action | Windows/Linux | Mac |
+	|--------|--------------|-----|
+	| Toggle Project Window | Alt + 1 | Cmd + 1 |
+	| Toggle Terminal | Alt + F12 | Alt + F12 |
+	| Hide All Windows | Ctrl + Shift + F12 | Cmd + Shift + F12 |
+	| Close Tab | Ctrl + F4 | Cmd + W |
+
+	## Code Generation
+	| Action | Windows/Linux | Mac |
+	|--------|--------------|-----|
+	| Generate Code | Alt + Insert | Cmd + N |
+	| Override Methods | Ctrl + O | Ctrl + O |
+	| Implement Methods | Ctrl + I | Ctrl + I |
+	| Surround With | Ctrl + Alt + T | Cmd + Alt + T |
+
+	## Search & Replace
+	| Action | Windows/Linux | Mac |
+	|--------|--------------|-----|
+	| Find | Ctrl + F | Cmd + F |
+	| Replace | Ctrl + R | Cmd + R |
+	| Find in Files | Ctrl + Shift + F | Cmd + Shift + F |
+	| Replace in Files | Ctrl + Shift + R | Cmd + Shift + R |
+
+	## Tips for Learning Shortcuts
+	1. Start with the most commonly used shortcuts (Quick Fix, Search Everywhere, and Basic Code Completion)
+	2. Learn shortcuts for actions you perform frequently
+	3. Use the "Key Promoter X" plugin to remind you of shortcuts
+	4. Practice regularly to build muscle memory
