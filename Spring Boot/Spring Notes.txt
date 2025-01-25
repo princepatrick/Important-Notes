@@ -1,3 +1,8 @@
+Key words:
+
+All Annotations: List of all annotations
+
+
 Errors:
 
 ***************************
@@ -909,3 +914,127 @@ Intellij shortcuts:
 	2. Learn shortcuts for actions you perform frequently
 	3. Use the "Key Promoter X" plugin to remind you of shortcuts
 	4. Practice regularly to build muscle memory
+
+What are the default accessibility of the methods and variables in java?
+	Java has four **access specifiers** that control the visibility of classes, methods, and variables. Here’s an overview and guidance on when to use each:
+
+	---
+
+	### 1. **Private**
+	   - **Scope**: Accessible only within the **same class**.
+	   - **Use**: 
+		 - For variables or methods that are part of the internal implementation and should not be accessible outside the class.
+		 - Example: Helper methods, sensitive data like passwords.
+	   - **Example**:
+		 ```java
+		 private int age;
+		 private void calculateAge() {
+			 // Internal logic
+		 }
+		 ```
+
+	---
+
+	### 2. **Default (Package-Private)**
+	   - **Scope**: Accessible only within the **same package**.
+	   - **Use**:
+		 - For classes, methods, or variables that are intended to be used only by classes in the same package.
+		 - Useful for organizing related functionality in the same package but keeping it hidden from other packages.
+	   - **Example**:
+		 ```java
+		 int value; // default access
+		 void display() {
+			 System.out.println("Package-private method");
+		 }
+		 ```
+
+	---
+
+	### 3. **Protected**
+	   - **Scope**: Accessible within the **same package** and by **subclasses** (even in different packages via inheritance).
+	   - **Use**:
+		 - For methods or variables that should be exposed to subclasses but not to the rest of the world.
+		 - Useful in designing extensible class hierarchies.
+	   - **Example**:
+		 ```java
+		 protected void displayMessage() {
+			 System.out.println("Protected method");
+		 }
+		 ```
+
+	---
+
+	### 4. **Public**
+	   - **Scope**: Accessible from **anywhere** (across all classes and packages).
+	   - **Use**:
+		 - For methods, variables, or classes that need to be universally accessible.
+		 - Suitable for APIs or utility classes that are used across multiple packages.
+	   - **Example**:
+		 ```java
+		 public void greet() {
+			 System.out.println("Public method");
+		 }
+		 ```
+
+	---
+
+	### **When to Use Which Access Specifier**
+	- **Private**: When encapsulating sensitive or internal details that should not be exposed.
+	- **Default**: When limiting access to classes within the same package without exposing them externally.
+	- **Protected**: When designing extensible classes that allow subclass access but restrict general access.
+	- **Public**: For methods, classes, or variables that are part of the public-facing API or need global visibility.
+
+	Choosing the appropriate access specifier helps in maintaining **encapsulation** and ensures **controlled access**, improving code modularity and security.
+	
+	To find the current time:
+		We use java.time.LocalTime. Lets see a sample usage below:
+			import java.time.LocalTime;
+			LocalTime currentTime = LocalTime.now();
+			int hour = currentTime.getHour();
+			int minute = currentTime.getMinute();
+			
+			String time = String.valueOf( hour ) + ":" +String.valueOf( minute );
+			
+			Use this in your usages:
+		
+		The other operations or classes that are available in java.time are:
+			java.time.LocalDate
+				Only dealing with dates
+				We can add or remove the dates from the current date
+			
+			java.time.LocalTime
+				Only dealing with time like above
+				You can add remove the number of hours, minutes and seconds
+				
+			java.time.LocalDateTime
+				When you are dealing with both Date and Time at the same time
+				
+	
+All Annotations:
+	@Bean
+	@Component
+	@ComponentScan
+	@Service
+	@Transactional
+	@RestController
+	@Autowired
+	@RequestMapping( value="/", method= RequestMethod.GET )
+	@EnableTransactionManagement
+	@Value("${filter.type}")
+	@PostConstruct
+	@ConditionalOnProperty(name = "filter.type", havingValue = "leakybucketmeter")
+	@Override
+	@Scheduled( cron = "*/30 * * * * ?" )
+	@Slf4j
+	@RequestMapping("/")
+	@RestController
+	@GetMapping("limited")
+	@Configuration
+	@Bean
+	@SpringBootApplication
+	@ComponentScan({"com.example.ratelimiter"})
+	@EnableScheduling
+	@Getter (Lombok)
+	@HttpServletRequest
+	@HttpServletResponse
+	
