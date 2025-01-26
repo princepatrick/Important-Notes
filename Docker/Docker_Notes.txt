@@ -1,0 +1,165 @@
+Docker Notes:
+
+What is a container (Docker Desktop Tutorial)?
+	A container is an isolated environment that is used to run an application at the runtime
+	You can start and stop the container, that runs the application whose image is stored in the container.
+	They have Volume or Bind Mounts that takes up the data from the user and these modifications are updated to the container and stays.
+	Any other changes that we do to the container are ephemereal - ie they tend to lose the memory as soons as we restart or stop the server
+
+What is the Volume or Bind Mounts?
+	They are a way through which the user inputs or user data could be added to the container permanently
+	In Docker Desktop, we have tab called Bind Mounts.
+	I have not explored it much
+
+What is the relationship between image and a container in docker?
+	Docker Image:
+		A Docker image is "read-only template" that contains the instructions to generate a docker container.
+		It includes the following:
+			Application or service you want to run
+			Dependencies, libraries, and configuration required
+			A lightweight operating system layer
+		A blueprint of the container
+		
+		Command: docker build -t welcome-to-docker .
+		
+	Docker Container:
+		It is runtime instance of the image
+		It represents a live environment that :
+			An isolated and portable environment for running an application
+			A writable layer for changes (unlike the image, which is read-only)
+			
+		Command: docker run -d --name CONTAINER_1 CONTAINER_2 IMAGE_NAME
+	
+	Relationship:
+		Images are the template or blueprint, whereas container is the runtime instance
+		Images are immutable or read only whereas container is dynamic and can change
+		Mulitple containers can share the same image
+		Containers reflect the image's state when created.
+
+How do I run a container(Docker Desktop Tutorial)?
+	Clone the repository - git clone https://github.com/docker/welcome-to-docker and move into the project directory by running cd welcome-to-docker
+	Verify the dockerfile in the folder - content and explanation
+		FROM node:18-alpine 			#The docker base image of node:18-alpine is pulled from the docker hub directory
+		
+		WORKDIR /app 					#We set the /app as the work directory
+		
+		COPY package*.json ./  			#We are copying all the package.json and package-lock.json files from the local directory into our new image's local 						   #directory 
+		
+		COPY ./src ./src  				#We are copying all the files from the local directory into the new image's local directory
+		COPY ./public ./public 
+		
+		RUN npm install \				#We are going to run various node package manager commands - install the node packages, install serve, build the app, and 
+			&& npm install -g serve \   #remove the dependencies at the end
+			&& npm run build \
+			&& rm -fr node_modules
+			
+		EXPOSE 3000 					#Exposes port number 3000
+			
+		Unrelated questions and answers about Node.json	
+			what is the difference between package.json and package-lock.json
+				package.json:
+					This is a file that collects all the necessary dependencies, their acceptable version ranges like express > 4.0 
+					This is the main package version information file in npm
+					They define the metadata for the node package manager 
+				
+				package-lock.json:
+					The package.json defines the range of versions for the various dependencies but we dont know exactly what version within this range has been 
+				installed
+					Hence, we use package-lock.json ,which simply locks the version of the dependencies that were finally installed in the system.
+					The npm tends to create or update the package-lock.json based on the version that was downloaded.
+					
+			What is the use of serve in node js 
+				The serve is a lightweight and production ready package that is used to run and display the static web pages frontend applications on the browser.
+				It acts as a readymade http server 
+				Eg: npx serve -s build 
+					Default port number is 3000
+				
+			Why do we remove the dependencies at the end
+				My understanding is that the Node modules folder stores the installed packages and all their content within it. They are used it until the application is built, since it is built now you dont need it work on a production ready application.
+				Hence, we simply remove the dependencies at the end as the node_modules tend to hold significant amount or resource and reduce transfer speeds
+				
+			What is the use of the node modules folder
+				All the files mentioned in the package.json are installed and stored in the node_modules folder.
+				Key Uses:
+					It performs the dependency management that the libraries of your project involves
+					It is able to understand the sub dependencies of the current dependencies in the project, and they are able to find and install them
+					They enable to use your application during development but might not be needed when have alredy developed the product, and we need to deploy the environment as it holds a lot of space.
+				
+			What does this docker file do
+				Dockerfile is used to create lightweight production ready containers
+				
+			Why do we move the files from the local directories into our image's local directory, where does this help
+				We move the files into the local directory as we would want to run our local image independent of the local directory's dependent files 
+				This ensures the application runs consistently without any dependencies on the host environment
+				The container becomes self contained and can be run in any where without needing external files and are reproducible
+	we go to the "welcome-to-docker" folder and open command prompt and run the below command:
+		"npm build -t welcome-to-docker ."
+		This runs and builds a new docker image
+	We can go to docker desktop and we can go to the images tab and we can find the image
+	We choose to run this image and we need to set the port number and we choose 8089
+	We have an url (8089:3000) under that opens the frontend of the application in the url : "localhost:8089" in the browser 
+	
+What is the purpose of a Dockerfile
+	The dockerfile is used to create a lightweight product ready containers
+	The dockerfile contains the step by step process or configuration on how to build the image - from what base image, what will be the working directory, what files do we need to move into the new docker repository and how to run the build, server etc.
+
+ERROR: failed to solve: node:18-alpine: failed to resolve source metadata for docker.io/library/node:18-alpine: failed to authorize: failed to fetch oauth token: unexpected status from GET request to https://auth.docker.io/token?scope=repository%3Alibrary%2Fnode%3Apull&service=registry.docker.io: 401 Unauthorized
+	We are facing the above error while doing "docker -t welcome-to-docker ."
+	The above issues is due to the unauthorized access into the docker hub.
+	The fix to the issue is to login into the docker using the following steps, some didnt work so we performed with the comments on what happened along with it.
+	
+	docker login #Credentials failed 
+	
+	docker info #Listed all the images, containers the current project was running, it was referring to the previous docker image that was run
+	
+	The issue was that the previously listed or saved credentials was being reused when attempting a login that resulted in an error. Hence, we needed to remove this credential to set up a new credential
+	
+	We went to "USER_PROFILE/.docker/" folder and deleted a file called "config.json" - This deletes the existing credentials of the docker application.
+	
+	We again ran the command "docker login -u <USER_NAME>", and i was prompted for a password, and on entering the password, we were logged in - SUCCESS
+	
+	We ran the command to build the docker image - "docker build -t welcome-to-docker ." and it worked.
+	
+How to run other's docker images (Docker Desktop tutorial)?
+	Open the docker desktop
+	search for the image you need by searching in the search bar or by clicking cltl + k and search "welcome-to-docker" for the above image
+	Select Run and set the optional parameters with the host port 8090 and click RUN
+	This will start the run in the new container that is visible in the Containers folder 
+	
+	
+Questions while listening course:
+1. Difference between virtual machine and containers
+2. What are mounts in OS terminology? What is a mount path
+3. What is a distribution how is it different from OS
+4. What is binaries
+5. WHat are wheels is it specific to pip. how is it related to binareis
+6. Are dependencies the necessary version of each software that our current software is going to use
+7. Why for a docker container does not stay alive for an OS
+8. Difference between encoding-decoding and encryption-decryption
+9. WHat docker build docker
+10. What docker compose docker
+11. What are the top 50 commands to learn in linux at beginner level 
+12. In replicaset, replicas = 4. We already have 5 replicas of a pod - mypod. What happens
+13. What is cronjob
+14. What is ingress
+
+
+Commands run on Virtualbox:
+sudo apt install curl
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+
+Mumshad courses:
+Kubernetes
+Devops
+Docker
+Ansible - beginner / Intermediate
+Terraform
+Openshift
+Swarm - Intermediate
+Chef
+Puppet
+Golang
+	
+		
