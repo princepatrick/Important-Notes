@@ -1,0 +1,51 @@
+
+Difference between code snippets
+	Snippet 1:
+		vector<int> valueTemp = ans[level-1];
+					
+		valueTemp.push_back( value );
+					
+		ans[level-1] = valueTemp;
+		
+	Snippet 2:
+		ans[level-1].push_back( value );
+        
+	
+	In snippet 1, 
+		we are actually creating a copy of the vector<int> from ans[level-1]
+		This copy is created in a new memory location with a new address.
+		When we push_back we are adding a new value into this memory
+		This does not update the value in the original ans[]
+	
+	In Snippet 2,
+		We are directly accessing the memory location of ans[] and are making the updates.
+		Hence, we are directly updating the data in the new location. 
+		This updates the value in the original ans[]
+		
+Why to use the following snippet 1 instead of snippet 2, even if the vector<int> nums is not going to be updated.
+	Snippet 1:
+		perform_func( int ind, vector<int>& nums ){ //Note the & address of operator is added
+			if( SOME_BASE_CONDITION ){
+				return;
+			}
+			
+			//Perform a recursive function call of perform_func() but you do not need update vector<int> nums as part of it.
+			perform_func( ind+1, nums );
+		}
+		
+	Snippet 2:
+		perform_func( int ind, vector<int> nums ){ //Note the & address of operator is NOT added
+			if( SOME_BASE_CONDITION ){
+				return;
+			}
+			
+			//Perform a recursive function call of perform_func() but you do not need update vector<int> nums as part of it.
+			perform_func( ind+1, nums );
+		}
+	
+	The thing is each time we call a recursive we send the vector<int> num into the perform_func() method. 
+	If the address of operator is used as in Snippet 1 then we save the space and reuse the same space, since there are no update calls happening your function will not impacted. This will save a lot of memory.
+	If the address of operator is not used as in Snippet 2, then we create a new copy each time the perform_func is called which can happen a lot of times in a recursive function that is very deep. This consumes a lot of memory.
+	In CP problems, we might face Memory limit exceeded issues if we use the snippet 2.
+
+	

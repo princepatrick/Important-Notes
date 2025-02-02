@@ -1009,6 +1009,9 @@ What are the default accessibility of the methods and variables in java?
 			java.time.LocalDateTime
 				When you are dealing with both Date and Time at the same time
 				
+How to find current jdk version in Intellij IDE?
+	File -> Project Structure -> Project 
+	Check Project SDK section to view current jdk version
 	
 All Annotations:
 	@Bean
@@ -1037,4 +1040,3 @@ All Annotations:
 	@Getter (Lombok)
 	@HttpServletRequest
 	@HttpServletResponse
-	
