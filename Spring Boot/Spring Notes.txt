@@ -1013,6 +1013,152 @@ How to find current jdk version in Intellij IDE?
 	File -> Project Structure -> Project 
 	Check Project SDK section to view current jdk version
 	
+What is the use of Spring-boot-starter-test: See the latter part of the thread - https://chatgpt.com/share/679f9d65-2f14-800b-b9a3-7d2921568958
+	It is a bundle of common testing frameworks:
+		Junit( Used for unit testing)
+		Hamcrest ( Used for complex assertions that deals with string etc )
+		Mockito ( Used for mocking dependencies in the class )
+		Spring Test ( for integration testing with Spring )
+		AssertJ ( for fluent assertion APIs )
+		JSONAssert & JSONPath ( for json based assertions )
+		
+	Give a comparison between Junit vs Hamcrest vs Mockito:	
+		Junit:
+			Framework for writing unit tests, test runner and structure
+			Use case: They are used to setup, break the code after usage, and the assertion based execution of the tests
+			When to use: You have to setup the basic structure of the unit tests with basic level of assertions, setup and tear down the code before and unit tests
+		
+		Hamcrest:
+			Helps in building expressive assertions 
+			It improves the readability of the assertions 
+			Use Case: Writing asssertion for complex object properties
+			When to use: When you have to complex assertions and dealing with string based comparison, and a more readable assertiosn
+		
+		Mockito:
+			They are used to mock the dependencies or the other dependent classes.
+			They are used to simulate the fucttioning of the other classes by creating mock objects.
+			Use case: If you want to simulate any dependent mock service or feature classes
+			When to use: when you have dependent database API, service classes, and other classes in your project, whose functionality you want to mimic.
+	
+	Give a realistic use case where Junit, Hamcrest and Mockito are used together:
+		Scenario:
+			We have an Userservice class with a repository class called UserRepository which collects information from the database and brings back to the user.
+			For the user service class, the user repository is an dependent class 
+			We need to check that whether the retrieval method works or not when we use the userservice class to handle and retrieve the data using the userrepositoy class
+		
+		Class structure of the UserService, User, and UserRepository objects:
+			import lombok.NoArgsConstructor
+			import lombok.AllArgsConstructor
+			import lombok.Getter
+			import lombok.Setter
+			import org.springframework.stereotype.Service
+			import java.util.Optional
+			
+			@NoArgsConstructor
+			@AllArgsConstructor
+			@Getter
+			@Setter
+			public Class User{
+				
+				public Long id;
+				public String name;
+				public String email;
+			
+			}
+			
+			public interface UserRepository{
+			
+				Optional<User> findUserById(Long id);
+				
+			}
+			
+			@Service
+			public Class UserService{
+			
+				UserRepository userRepository;
+				
+				public UserService( UserRepository userRepository ){
+					this.userRepository = userRepository;
+				}
+				
+				public User findUserByUserId( Long id ){
+					
+					return userRepository.findUserById(id).orElseThrow( () -> new RunTimeException("User not found") );
+				
+				}
+			
+			}
+			
+		Class structure and implementation of the test class:
+			import static org.hamcrest.MatcherAssert.assertThat;
+			import static org.hamcrest.Matchers.*;
+			import static org.junit.jupiter.api.Assertions.assertThrows;
+			import static org.mockito.Mockito.*;
+			
+			import org.junit.jupiter.api.BeforeEach;
+			import org.junit.jupiter.api.AfterEach;
+			import org.junit.jupiter.api.extension.ExtendWith;
+			import org.mockito.Mock;
+			import org.mockito.InjectMocks;
+			import org.mockito.junit.jupiter.MockExtension;
+			
+			
+			import java.util.Optional;
+			
+			@ExtendWith(MockExtension.class) //Brings the properties of the Mockito class into the Junit 5 test classes
+			class UserServiceTest{
+				
+				//This helps in creating a mock object for the UserRepository class. Note that we do not have an implementation for this class instead we are
+				//only creating the implementation when we are going to try in the individual @Test method 
+				//THis gives leverage to the individual implementation to throw exception or to return an response object.
+				@Mock
+				UserRepository userRepository;
+				
+				//This helps in injecting the mock objects that is (UserRepository) object into the userService class
+				@InjectMocks
+				UserService userService;
+				
+				//This sets up the process to follow before the starting of the implementation of UserServiceTest
+				@BeforeEach
+				public void setup(){
+				
+				}
+				
+				//This is one implementation of the Unit Test.
+				//In this implementation, we are looking at the positive test case where we achieve success where we find the user id 
+				@Test
+				public void testFindUserByUserId_Success(){
+					
+					User user = new User(1D, "John Doe", "johndoe@abc.com");
+					when(userRepository.findUserById(1D)).thenReturn(Optional.of(user);
+					
+					User resultUser = userService.findUserByUserId(1D);
+					
+					assertThat( resultUser, is(notNullValue()));
+					assertThat( resultUser.getName(), equalTo("John Doe") );
+					assertThat( resultUser.getEmail(), equalTo("johndoe@abc.com") );					
+				
+				}
+				
+				//This is another implementation of the unit test
+				//This implementation checks the negative scenario where there is an failure in finding the user by user id.
+				@Test
+				public void testFindUserByUserId_Failure(){
+				
+					when( userRepository.findUserById(99D)).thenReturn(Optional.empty());
+					
+					RuntimeException thrown = assertThrows(RunTimeException.class, () -> userService.getUserById(99D));
+					
+					assertThat( thrown.getMessage(), is("User not found") );
+				
+				}
+			
+			}
+		
+		
+			
+		
+	
 All Annotations:
 	@Bean
 	@Component
@@ -1040,3 +1186,13 @@ All Annotations:
 	@Getter (Lombok)
 	@HttpServletRequest
 	@HttpServletResponse
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Getter
+	@Setter
+	@ExtendWith( MockExtension.Class )
+	@Mock
+	@InjectMocks
+	@Test
+	@BeforeEach
+	@AfterEach
