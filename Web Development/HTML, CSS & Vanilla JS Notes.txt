@@ -1,0 +1,76 @@
+HTML:
+	Source: https://www.geeksforgeeks.org/html-interview-questions-answers-set-1/
+	Read about:
+		How to use SQL DBs and application caches to store offline data
+		What is JS Web Worker API in HTML5 how it is useful
+		What is Geolocation API - can we use in our project
+		What is the use of semantic markup like header, footer and article tags etc
+		Use of <!DOCTYPE>, <a>, <b> vs <strong>, <em> vs <i>, <h> sizes and use, HTML Colors - Inbuilt, RGB, RGBA, Hexadecimal, HSL, HSLA, <a>-anchor and direction, <a>-href and text, <link target=""> Not supported by HTML 5, <table> tags, <block> vs <inline> what is default display value,
+	
+	Source: https://www.geeksforgeeks.org/html-interview-questions-answers-set-2/
+	Read about:
+		<div> vs <span>: block of element vs small part of the line, portion of web page vs portion of line, align attributes vs no align attributes, 
+		class vs id: . vs #, multiple usage vs unique
+		Nested web page: <iframe> and <embed> tags
+		Tags inside <head>: <title> Title, <link> link to JS, <meta> meta data, <base> Base URL, <style> define the internal CSS, <script> define the JS
+		<meta> tags: Provide info about HTML document, <meta attribute-name="value">, stays in HEAD only, Used for SEO
+		Semantic element: article, aside, details, figure & figcaption, footer, header, main, mark, nav, section
+		HTML Entities: Not good but read it 
+		HTML Symbols: Not good but read it ©. ®
+		HTML Encoding: Good Read it
+		GET vs POST: HTTP Protocols intro, GET vs POST, Get request has an URL with parameters with BOLD and value of parameters in italic, POST will submit a request.
+		<Canvas>: container for graphics, only a board to be drawn, Javascript used for drawing on the board
+		SVG: Scalable vector graphics, SVG is advantageous over JPEG and GIF - created and edited with text editor, scalable, searched, indexed, compressed and scripted, printed with high quality at any resolution.
+		Supported multimedia formats: .mp3, .mp4, .mpg, .wmv, .avi
+		Geolocation: Good Read it
+		HTML Web Storage API: Good Read it
+			Session Storage and Local Storage:
+				Session Storage:
+					5MB space
+					The data persists till we do not close the browser's tab. 
+					Once the tab is closed, the data is lost
+				Local Storage:
+					5MB space
+					The data persists as long as the user manually deletes the field 
+					This is the only difference between Local and Session storage
+		<forms>: usage of the tags, attributes inside it
+		
+	Source: 		https://www.geeksforgeeks.org/html-interview-questions-answers-set-3/
+	Read about: Read this section Again
+		<a>: This helps to link to a specific website or a dynamic link mentioend in href
+		Void Elements:
+			<br>, <hr>, <img>, <input>, <link>, <base>, <meta>, <param>, <area>, <embed>, <col>, <track>, <source>
+			Can only have attributes but does not have any content.
+		Convert inline into block and block into inline:
+			We use display property to convert the property from inline ot block and vice versa
+		Separate sections of text
+			<br>, <p>, <blockquote>
+		<html lang=”en’>  vs <html lang=”en-US’>
+		Creating scrolling text or images in html - <marquee> tag
+		Manifest file in HTML:
+		Open a target element in another portion:
+			<element target="_blank|_self|_parent|_top|framename"\>
+			Attribute Values:
+				_blank: It opens the link in a new window.
+				_self: It opens the linked document in the same frame.
+				_parent: It opens the linked document in the parent frameset.
+				_top: It opens the linked document in the full body of the window.
+				framename: It opens the linked document in the named frame.
+		Web workers in HTML:
+			Types of web workers: Shared web worker, distributed web worker
+		Multipart Form Data:
+			The enctype = "multipart/form-data" is used to send the file using the form. This is one of the 2 types of encoding supported
+			It is used to send large files
+			It sends the large files in parts
+		How to add SVG to your web page:
+			we have various ways to add svg - svg in a <img>, <object>, <embed>, <image>
+		Media Element tags:
+			<audio>, <video>, <source>, <embed>, <track>
+		Handle javascript event in HTML:
+			<element onClick="MyScript">, onBlur, onChange, onFocus, onMouseOver
+		Cellpadding vs Cellspacing
+			Cellpadding - whitespace between cell edge and content of cell
+			Cellspacing - whitespace between adjacent cells
+
+	
+		
