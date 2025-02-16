@@ -98,6 +98,50 @@ How do I run a container(Docker Desktop Tutorial)?
 	We can go to docker desktop and we can go to the images tab and we can find the image
 	We choose to run this image and we need to set the port number and we choose 8089
 	We have an url (8089:3000) under that opens the frontend of the application in the url : "localhost:8089" in the browser 
+
+How to create a docker image in local:
+	I have a project folder named "Docker_scripts" in my image-edit-evaluation project that contains all the scripts that is used for metrics generation - DINOv2, VILA, MUSIQ, CLIP, LPIPS
+	I have the data in a folder called data 
+	I have created a virtual environment called "docker_scripts_venv" 
+	I activated the virtual environment and then used this virtual environment to run all the scripts along with installing all the required libraries and packages
+	Make sure the docker desktop is running - check the windows pane at the bottom right portion - check if the docker icon has running.
+	
+	All of the above is a preprocessing steps:
+	
+	1. Now I create the requirements.txt based on the current virtual environment - pip freeze > requirements.txt
+	2. Create a dockerfile in this folder. The general rule of the dockerfile should be as follows:
+			#Choose a compatible python version that your virtual environment is using 
+			FROM python:3.11.5-slim
+			
+			#Create a new work directory in which you are going to store the files, folders, and objects
+			WORKDIR /app
+			
+			#Copy the requirements.txt into this folder. The general idea is to move all our local files into this app folder, before we create the image
+			COPY requirements.txt ./
+			
+			#Run the installation of the requirements.txt so that the packages are installed 
+			RUN apt-get update && apt-get install -y dos2unix \
+				&& dos2unix requirements.txt \
+				&& pip install --no-cache-dir -r requirements.txt
+				
+			#Copy the python scripts from the local folder into the app folder 
+			COPY ./data CaptionGenerator.ipynb CLIP.ipynb DinoV2.ipynb LPIPS.ipynb musiq.ipynb PerformanceComparisonScript.ipynb vila.ipynb ./
+			
+			#Expose a specified port number
+			EXPOSE 8888
+			
+			#Use the command line to start the application
+			CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root", "--no-browser"]
+	3. Now we need to create the docker image from the above dockerfile
+		docker build -t image-edit-evaluation-scripts .
+	4. Run the image to check if the image works fine in the local 
+		docker run --rm image-edit-evaluation-scripts
+	5. Tag the docker image to give a correct name that you would want to display in the docker hub
+		Create a name that has your docker hub username
+		docker tag your-image-name your-dockerhub-username/your-image-name
+	6. Push the image into the docker hub
+		docker push your-dockerhub-username/your-image-name
+
 	
 What is the purpose of a Dockerfile
 	The dockerfile is used to create a lightweight product ready containers
@@ -125,6 +169,118 @@ How to run other's docker images (Docker Desktop tutorial)?
 	search for the image you need by searching in the search bar or by clicking cltl + k and search "welcome-to-docker" for the above image
 	Select Run and set the optional parameters with the host port 8090 and click RUN
 	This will start the run in the new container that is visible in the Containers folder 
+
+Docker Commands:
+	docker images: 
+		List all the images that were created by the user 
+	docker rmi <image_name>: 
+		Removes an image that is in the docker hub 
+	docker build -t <image_name> . : 
+		Builds an image with the name <image_name> 
+	docker tag local_image_name altername_tag_name_local_or_remote: 
+		Creates a new alternate name for the local image name.
+	docker push docker_hub_user_name/docker_image_name: 
+		Pushing the docker image into the remote repository
+	docker pull docker_hub_user_name/docker_image_name: 
+		Pulling the docker image from the remote docker repository and pulling the images into our local repository
+	docker ps: 
+		Lists all the running containers
+	docker ps -a: 
+		Lists all the containers including the stopped containers
+	docker start <name_of_container>: 
+		Start a docker container
+	docker stop <name_of_container>: 
+		Stops a docker containers
+	docker restart <name_of_container>: 
+		Restart a running or stopped container
+	docker rm <name_of_container>: 
+		Removes a stopped container 
+	docker exec -it <name_of_container> bash: 
+		Starts an interactive bash shell in a running container
+	docker logs <name_of_container>: 
+		Generates the logs of the running container
+	docker inspect <name_of_container>: 
+		Provides the detailed information of the started container
+	docker run -d <image_name>:
+		Runs a container in a detached mode (in the background)
+	docker run -it <image_name>:
+		Runs a container in an interactive manner(attaches to it)
+	docker network ls:
+		Lists all the docker network 
+	docker network inspect <network_name>
+		Provides the detailed information on the docker network
+	docker network create <network_name>
+		Creates a new docker network 
+	docker volume ls:
+		Lists down all the docker volume
+	docker volume inspect <volume_name>
+		Provides a detailed information on the docker volume
+	docker volumen create <volume_name>
+		Creates a new docker volume 
+	docker commit <container_name_or_id> <image_name>
+		Creates a new copy of the image_name from the container_name based on the changes done on the container
+	docker history <image_name>
+		Displays all the history of the image 
+	docker system df:
+		Displays all the system usage of the docker images, containers, volumes, and build cache etc
+	docker system prune:
+		Deletes all the unused containers, networks, and images to free space 
+	docker-compose up
+		starts all the services mentioned in the docker-compose.yml
+	docker-compose down 
+		Stops and removes all the containers started by docker-compose
+	
+What does docker sytem df do? What does Reclaimable in the docker system df mean?
+	Docker system df is used to display how much of the disk space is occupied by the docker images, container, volumes, build cache.
+	The reclaimable in the docker system df refers to how much of the space could be taken back up as they are relatively unused. Some of the use cases are:
+		Stopped containers
+		Dangling images (The images that are not connected with a container)
+		Unused volumnes 
+		Build cache
+		
+What is the relationship between docker container and docker image?
+	Docker image:
+		Docker Image is a read only template of a container 
+		It contains application code, libraries, tools, dependencies that are present for the container.
+		It is like a snapshot or template(blueprint)
+	Docker Container:
+		A runnable instance of a docker image
+		It is a lightweight isolated environment to run the applications defined in the image 
+		A single image can create multiple docker containers
+		A docker image is needed to generate a docker container
+		A running instance of a blueprint
+
+What is the use of docker network?
+	They are used to interconnect between docker images 
+	They are used to create a isolated network environment in which the containers could be interlinked with each other.
+	They are used to communicate within each other and with outside world
+	There are various ways of connectivity - bridge, host and overlay	
+
+What is the use of docker volume?
+	Docker volumes are used to persist data generated by docker containers.
+	In general, storing in the file system of the docker container, gets lost when a docker container is removed, or stopped
+	If you want to persist the data in the system even if you remove or stop the container, we need to store in the docker volume
+	They are stored as - databases, file configuration, and other persistent data
+	
+What is the relationship between docker network, volumne, container, images 
+	Image:
+		Provides the template to create a docker container
+	
+	Container:
+		It is the run time instance of a docker image 
+		it stores the data in external persisted locations called docker volume
+		It is used to interact with other containers or external sources through a docker network
+	
+	Volume:
+		They are used to persist the data generated by docker container
+	
+	Network:
+		They are used to connect with other docker containers and external volumes
+
+What is the use of docker-compose?
+	It is a tool for defining and running multiple containers at the same time.
+	It has a YAML file that contains - application services, networks, and volumes
+	It is used to manage complex docker applications with the run of a single file.
 	
 	
 Questions while listening course:

@@ -46,6 +46,47 @@ Why to use the following snippet 1 instead of snippet 2, even if the vector<int>
 	The thing is each time we call a recursive we send the vector<int> num into the perform_func() method. 
 	If the address of operator is used as in Snippet 1 then we save the space and reuse the same space, since there are no update calls happening your function will not impacted. This will save a lot of memory.
 	If the address of operator is not used as in Snippet 2, then we create a new copy each time the perform_func is called which can happen a lot of times in a recursive function that is very deep. This consumes a lot of memory.
-	In CP problems, we might face Memory limit exceeded issues if we use the snippet 2.
+	In CP problems, we might face Memory limit exceeded and Time limit exceeded issues if we use the snippet 2.
 
+Note: begin(m) and m.begin() are both the same
+	unordered_map<int, int> m;
+	map<int, int> m;
+	set<int> m;
 	
+	both m.begin() and begin(m) in all these cases
+
+Note: In C++ 17 and later this check is valid: 
+		if (auto find_it = number_to_indexes.find(number);
+			find_it == end(number_to_indexes)) 
+	  https://chatgpt.com/share/67a74748-dd60-800b-8cc0-7c1d350e5aa5
+	  
+How to iterate the map in a reverse order
+	Forward direction:
+		for( auto itr=m.begin() ; itr!=m.end() ; itr++ ){
+		
+		}
+	
+	/* Although I have seen before I forgot it so it was reminder*/
+	Reverse Direction:
+		for( auto itr=m.rbegin() ; itr != m.rend() ; itr++ ){
+		
+		}
+
+How to update the map the value 
+	Previously I used to do only this way:
+		if( m.find(value) != m.end() ){
+			auto itr = m.find( value ) 
+			vector<int> temp = itr->second
+			temp.push_back(NEW_VAL)
+			itr->second = temp
+		}
+		
+	/*This is more suitable since we are not dealing with pointers at this point, instead we are only using direct access and update on the map*/
+	We can do it this way:
+		if( m.find(value) != m.end() ){
+			vector<int> temp = m[value]
+			temp.push_back(NEW_VAL)
+			m[value] = temp
+		}
+		
+		

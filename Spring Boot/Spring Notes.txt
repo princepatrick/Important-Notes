@@ -1155,7 +1155,15 @@ What is the use of Spring-boot-starter-test: See the latter part of the thread -
 			
 			}
 		
-		
+Setting up database Schema, Gradle, and Project from Scratch - Sreeja:
+	https://chatgpt.com/share/67ac1153-5a50-800b-b792-fc8a26783fc7
+	
+Configure Gradle Steps:
+
+Configure JDK Steps:
+
+Configure Maven Steps:
+
 			
 		
 	
