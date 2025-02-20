@@ -318,4 +318,43 @@ Chef
 Puppet
 Golang
 	
+My Prompt: I have a docker desktop in my local and it created a folder called "Docker" in my C:users/X/AppData/Local it is pretty big with 29.2 GB I am trying to conserve space will it cause any problem if I move the folder into the new D:/ that my external SSD contains.
+
+Answer:
+	Steps to move Docker container from one folder to another:
+		Step 1: Stop docker desktop:
+			You can stop docker desktop through going to the tray in the bottom right corner and right clicking on the docker desktop icon and clicking on the quit docker desktop icon
+			Alternatively, go to task manager and end task for all the "Docker" tasks
+		
+		Step 2: Move the folder.
+			Right now I have the docker files in "C:\users\Prince\AppData\Local\Docker", I need to move to my external ssd and save it as "D:\Prince\AppData\Local\Docker"
+		
+		Step 3: Create a symbolic link from C: into D:
+			mklink /J "C:\users\Prince\AppData\Local\Docker" "D:\Prince\AppData\Local\Docker"
+			Go to command prompt and run the above command you should find the following update:
+			
+			C:\Windows\System32>mklink /J "C:\Users\X\AppData\Local\Docker" "D:\X\AppData\Local\Docker"
+			Junction created for C:\Users\X\AppData\Local\Docker <<===>> D:\X\AppData\Local\Docker
+		
+		Step 4:
+			Open Docker Desktop again and verify if it is working by running below command 
+				docker info
+	
+	Alternative(Preferred) method to Change Docker Data-root in settings:
+		instead of manually moving files, you can configure docker to store data in D: permanently
+			Open Docker Settings
+				Go to Docker Desktop -> Settings
+				Navigate to Advanced
+				Look for Disk Image Location
+				Change it to D:\Prince\AppData\Local\Docker
+			
+			Click Apply and Restart
+			
+	Possible Issues:
+		External SSD must be always connected when running Docker containers 
+		
+		Performance issues due to delay in access of resources in SSD
+		
+		Permission Errors:
+			If you run into permission errors - restart your system or run docker desktop on admin priviledges
 		
