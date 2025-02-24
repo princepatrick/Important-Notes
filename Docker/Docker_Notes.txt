@@ -318,6 +318,9 @@ Chef
 Puppet
 Golang
 	
+	
+Docker Moving the existing image location from Local C:\ into D:\
+	https://chatgpt.com/share/67b83914-68e4-800b-bb9e-40865f6601f6
 My Prompt: I have a docker desktop in my local and it created a folder called "Docker" in my C:users/X/AppData/Local it is pretty big with 29.2 GB I am trying to conserve space will it cause any problem if I move the folder into the new D:/ that my external SSD contains.
 
 Answer:
@@ -357,4 +360,21 @@ Answer:
 		
 		Permission Errors:
 			If you run into permission errors - restart your system or run docker desktop on admin priviledges
+			
+How to verify if the path change is present:
+	1. Run the command "Get-Item -Path "C:\Users\X\AppData\Local\Docker" in the directory, 
+		we will get "Directory: C:\Users\X\AppData\Local"
 		
+		Mode                 LastWriteTime         Length Name
+		----                 -------------         ------ ----
+		d----l         2/20/2025   2:53 AM                Docker
+	
+	2. We will go to the following:
+			Open Docker Desktop
+			Click on settings -> Resources -> Advanced
+				In the Disk Image Location it will be pointed to "C:\Users\X\AppData\Local\Docker" change it to "D:\Docker"
+
+			Click on docker info
+				If you get the response we can confirm the change is complete
+	
+	

@@ -60,3 +60,8 @@ Most Common Git Commands:
 	
 	git checkout new-branch
 		It simply switches to the new branch
+		
+Notes:
+git add .
+warning: in the working copy of '.gitattributes', LF will be replaced by CRLF the next time Git touches it
+	What is this?

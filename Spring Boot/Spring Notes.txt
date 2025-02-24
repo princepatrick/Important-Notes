@@ -1330,3 +1330,159 @@ Gradle Groovy vs Gradle Kotlin:
 	Use .zip if you want a portable setup (e.g., install on D:\Java\).
 	Use .msi if you need easy installation with updates.
 	Use .exe if you want the simplest installation
+	
+what is .md5 and .sha1
+	
+
+Questions on Feb 21st: Gradle Setup Issues: https://chatgpt.com/share/67b838b4-3de8-800b-af1f-4ef34814c202
+	Question 1: org.gradle.api.internal.provider.AbstractProperty$PropertyQueryException: Failed to calculate the value of task ':compileJava' property 'javaCompiler'.
+
+	Question 2: what does java --version mean what does it do
+
+	Question 3: I have multiple java versions available how to update to a specific version. I want it to be updated in this project onlly not other projects
+
+	Question 4: I have the following logs from gradle. Is it connected?
+		Log:
+		2:41:41 AM: Executing...
+
+		Starting Gradle Daemon...
+		Connected to the target VM, address: '127.0.0.1:59000', transport: 'socket'
+		Gradle Daemon started in 2 s 662 ms
+
+		> Task :help
+
+		Welcome to Gradle 8.12.1.
+
+		To run a build, run gradle <task> ...
+
+		To see a list of available tasks, run gradle tasks
+
+		To see more detail about a task, run gradle help --task <task>
+
+		To see a list of command-line options, run gradle --help
+
+		For more detail on using Gradle, see https://docs.gradle.org/8.12.1/userguide/command_line_interface.html
+
+		For troubleshooting, visit https://help.gradle.org
+
+		[Incubating] Problems report is available at: file:///D:/Prince/Git%20Projects/Dom%20Parser%20Spring%20Boot/domparser/domparser/build/reports/problems/problems-report.html
+
+		Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+		You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+		For more on this, please refer to https://docs.gradle.org/8.12.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+		BUILD SUCCESSFUL in 10s
+		1 actionable task: 1 executed
+		2:41:52 AM: Execution finished.
+		Disconnected from the target VM, address: '127.0.0.1:59000', transport: 'socket'
+	
+	Question 5:
+		Cannot resolve symbol 'SpringApplication'
+		Cannot resolve symbol 'autoconfigure'
+
+		Code:
+		package com.example.domparser;
+
+		import org.springframework.boot.SpringApplication;
+		import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+		@SpringBootApplication
+		public class DomParserApplication {
+
+			public static void main(String[] args) {
+				SpringApplication.run(DomParserApplication.class, args);
+			}
+
+		}
+	
+		Solution: Missed adding a dependency: implementation 'org.springframework.boot:spring-boot-starter'
+
+	Question 6:	Is my server started. My logs were attached:
+		
+		3:03:25 AM: Executing ':DomParserApplication.main()'...
+
+		> Task :compileJava
+		> Task :processResources
+		> Task :classes
+		Connected to the target VM, address: 'localhost:59462', transport: 'socket'
+
+		> Task :DomParserApplication.main()
+
+		  .   ____          _            __ _ _
+		 /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+		( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+		 \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+		  '  |____| .__|_| |_|_| |_\__, | / / / /
+		 =========|_|==============|___/=/_/_/_/
+
+		 :: Spring Boot ::                (v3.4.2)
+
+		2025-02-21T03:03:33.489-05:00  INFO 14456 --- [dom-parser] [  restartedMain] c.e.domparser.DomParserApplication       : Starting DomParserApplication using Java 17.0.12 with PID 14456 (D:\Prince\Git Projects\Dom Parser Spring Boot\domparser\domparser\build\classes\java\main started by princ in D:\Prince\Git Projects\Dom Parser Spring Boot\domparser\domparser)
+		2025-02-21T03:03:33.509-05:00  INFO 14456 --- [dom-parser] [  restartedMain] c.e.domparser.DomParserApplication       : No active profile set, falling back to 1 default profile: "default"
+		2025-02-21T03:03:33.602-05:00  INFO 14456 --- [dom-parser] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+		2025-02-21T03:03:33.602-05:00  INFO 14456 --- [dom-parser] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+		2025-02-21T03:03:35.305-05:00  INFO 14456 --- [dom-parser] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+		2025-02-21T03:03:35.322-05:00  INFO 14456 --- [dom-parser] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+		2025-02-21T03:03:35.322-05:00  INFO 14456 --- [dom-parser] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.34]
+		2025-02-21T03:03:35.381-05:00  INFO 14456 --- [dom-parser] [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+		2025-02-21T03:03:35.381-05:00  INFO 14456 --- [dom-parser] [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1779 ms
+		2025-02-21T03:03:35.949-05:00  INFO 14456 --- [dom-parser] [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+		2025-02-21T03:03:36.002-05:00  INFO 14456 --- [dom-parser] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+		2025-02-21T03:03:36.020-05:00  INFO 14456 --- [dom-parser] [  restartedMain] c.e.domparser.DomParserApplication       : Started DomParserApplication in 3.181 seconds (process running for 3.745)
+
+Give me general rules for gradle.build file?
+	Isnt gradle.build already managing the dependencies in the dependencies section (libs.versions.toml) what is the use of Gradle Version Catalog and Spring Boot BOM - answer in medium size response
+	Could you provide the structure of the buildSrc folder that contains and maintains multiple build.gradle files - answer in medium size response
+	.gradle Caching and parallel - answer in medium size response
+	Explain in short what is a CI/CD pipeline, like what does it do
+	How to integrate the build.gradle with a CI/CD pipeline, what should I do for it
+	
+	https://chatgpt.com/share/67ba39b8-aad8-800b-9f35-98baf52ba6b3
+
+What is the use of a controller class in spring boot? What are the general rules and best practices while defining a controller class? Answer in long, detail and use technical terms that would help in an interview
+	What is the use of API versioning (URI, Header and Parameter Versioning). Give me step by step process on how to achieve it and what is the advantage of it? Explain in detail?
+	Give an example integrating Swagger API documentation with versioning with spring boot also is swagger api tightly bound to spring boot or can be used with other backend systems like spring boot
+	Yes teach how to integrate Spring Security for JWT authentication with versioned APIs?
+	
+	https://chatgpt.com/share/67ba6f8d-8c94-800b-bcbe-4ef17e0c5390
+
+What is the use of Spring Boot Model package. Why do we need it and what is stored in them. What are any best practices in defining and developing the model package.
+	https://chatgpt.com/share/67ba71ca-b114-800b-b0a6-1311c4feb16a
+
+What is the use of Service Layer in Spring Boot:
+	What is the use of Exception folder in the Spring boot application and how to integrate with our code flow.
+	How to integrate with logging exceptions or integrating with monitoring tools (e.g., ELK, Prometheus) - 
+		Chatgpt: To effectively log exceptions and monitor your application, you can integrate logging frameworks like SLF4J + Logback and use monitoring tools like ELK (Elasticsearch, Logstash, Kibana) or Prometheus + Grafana.
+
+	https://chatgpt.com/share/67ba733f-a0b0-800b-8cd4-91ed78ed3fd3
+		Contains a set up for ELK, Prometheus and Grafana 
+
+Targets are:
+	Go through the annotations in Spring boot and try to understand or talk about 30 of them - write them here
+		Core Spring Annotations: 
+			@Component, @Bean, @Configuration, @Primary, @DependsOn, @Lazy
+		Controller and Web Layer (Spring MVC): 
+			@Restcontroller, @Controller, @RequestMapping, {@GetMapping, @PostMapping, @PutMapping, @DeleteMapping}, @PathVariable, @RequestParam, @RequestBody, @ResponseBody, @CrossOrigin, @ExceptionHandler, @ResponseStatus, @ModelAttribute - need to read
+		Repository and Data Access Layer:
+			@Repository, @Transactional, @EnableJpaRepositories, @Entity, @Table, @Column, @Id, @GeneratedValue, { @OneToOne / @OneToMany / @ManyToMany / @ManyToOne }, @JoinColumn - Need to read, @Query - Need to read
+		Redis and Caching - Need to study later
+		Service Layer: 
+			@Service, @Transactional, @Async - Need to study later, @Scheduled, @EnableScheduling
+	
+	Amma Insurance
+	Complete the spring boot and checkin today
+	2 KMP
+	2 Prefix Tries 
+	1 Suffix Tries
+	
+	10 New Annotations 
+	
+	At end of day:
+		Watch Magnus Carlsen Interview
+	
+	
+
+
+
