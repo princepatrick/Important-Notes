@@ -1471,18 +1471,52 @@ Targets are:
 		Service Layer: 
 			@Service, @Transactional, @Async - Need to study later, @Scheduled, @EnableScheduling
 	
-	Amma Insurance
-	Complete the spring boot and checkin today
-	2 KMP
-	2 Prefix Tries 
-	1 Suffix Tries
+Spring: Using Service and Utility Classes:
+	https://chatgpt.com/share/67bd3155-bbfc-800b-9dd0-6b5fc46ef6c2
 	
-	10 New Annotations 
+Spring: Spring Security Overview and Jwt setup:
+	https://chatgpt.com/share/67c006cd-989c-800b-a6fe-d1f207cbc65b
 	
-	At end of day:
-		Watch Magnus Carlsen Interview
+Issues faced during Dom Parser setup for spring security on 02/25?
+	Cannot resolve symbol 'Bean' and Cannot resolve symbol 'SecurityFilterChain' - I invalidated the cache and restarted the application.
+		Learnt:
+			This could be a CSRF issue 
+			CSRF issue was previously resolved through extending WebSecurityConfigurerAdapter class and trying to disable CSRF
+			But I found that the class is WebSecurityConfigurerAdapter  is deprecated and no longer available - hence, I am finding an alternate solution through:
+			https://stackoverflow.com/questions/54177651/cannot-resolve-symbol-websecurityconfigureradapter
+	The Gradle start or server start was throwing an error: "Cause: zip END header not found": The root cause of the issue - was that the Gradle downloaded cache was having some jars that were corrupted
+		Learnt:
+			The cache of the downloads for the specific software is present in C:\Users\prince\
+			The cache for gradle is present in C:\Users\prince\.gradle
+			We needed to delete the jar folder gradle-8.12.1 from C:\Users\princ\.gradle\wrapper\dists\gradle-8.12.1-bin\eumc4uhoysa37zql93vfjkxy0 as this contained the previously corrupted jars or missing jars 
+	I added a dependency (io.jsonwebtoken.*) and started the server using server restart but when I tried to import with io.* I did not get the jsonwebtoken option at all, I also did not see the file in the external libraries section. I tried running gradle clean build, gradlew clean build and gradlew.bat clean build but I did not get the changes in library nor in the import command, Finally clicking the gradle icon on the ide helped in laoding the dependency into my external libraries section. 
+		Learnt:
+			gradle clean build - it uses the gradle file mentioned in the system variables path and tries to generate and store the jars at the build folder 
+			gradlew and gradlew.bat clean build - It uses the gradle version that is set in our projects folder to generate and store the jars and they store the jars at the build folder and they use the version of java that is used in our local folder 
+			clean build - This would clear the files in our build folder and then redownload the jars/fodlers again 
+			After updating the dependencies list in build.gradle and doing the server restart, we see text stating that the jars are downloaded but I could not see it - this is actually stored in C:/users/X/.gradle/cache/module-2/file/... 
+			On clicking the gradle icon, the files are being reset and jars are generated in the external libraries section and I was also able to see the same in the import statement from now.
+	I was facing a long standing issue while setting up Jwt based authentication. The issue was throwing error during sending my request which is basically the dummy user name and passwsord to retrieve the bearer token to make the future calls. The error is due to the request did not have the right format - which until that point was using plain text. Now we updated the type of the request to use a json and application json. then it worked 
+		Learnt:
+			The type of the request matters to process the code. Since our request body is suited to handle applicaiton/json type we were not able to process with general text
+			The flow of the code moves from filter -> controller. Our servlet path is only accessed and run at the controller portion where we have defined the /dom-parser/authenticate path
+			The filter chain is basically a stream of filters that receives a request and sends the response to the next filter. This 13 filters complete their process to reach to dispather servlet which is basically something that takes up the request and contains threads to handle mutliple requests at the same time.
+			THis dispather servlet would send the request to the controller class then to process the request.
+			The url at the controller class matters to the very last character - "/dom-parser/authenticate/" for example the path was pointing to "/dom-parser/authenticate" and it was missing the last "/"
+			I was previously returning a List<ParserResponse> object to the postman but there was some issue while returing the values hence, I had created a ResponseEntity<T> to the end user. The T could be anything - such as AuthenticationResponse, String etc.	
+			I also had issues in handling the json request as the object was not able to parse or handle it. This was handled using the jakarta library. We installed the library - implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2' and then the library helped to handle the json request.
+	Now I received the token from the "/authenticate" call. This is called the bearer token. The bearer token is then used by the subsequent calls as the methodology to make the authentication calls. Now I was making the calls using the bearer token but still I was facing errors like 401 Unauthorized errors. The root cause of the error was "Method threw 'io.jsonwebtoken.ExpiredJwtException' exception." due to "JWT expired at 2025-02-26T18:51:23Z. Current time: 2025-02-27T00:34:46Z, a difference of 20603673 milliseconds.  Allowed clock skew: 0 milliseconds."
+		Learnt:
+			The issue was due to the bearer token or jwt token was expired
+			The bearer token has a expiration time of 60 mins which was configured in applicaiton.properties
+			A very simple of getting a new token is to again make a call to "/authenticate" which will get us a new token which can be used for the future calls for the next 60 minutes or until the expiration time. 
+			Now making calls to the respective request /get-value/ with this token as the bearer token helps in making the calls to the necessary service.
 	
-	
+			
+			
+
+
+
 
 
 

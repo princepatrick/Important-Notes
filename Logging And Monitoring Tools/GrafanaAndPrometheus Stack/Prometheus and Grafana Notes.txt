@@ -1,0 +1,61 @@
+Prometheus and Grafana are complementary tools that help in - monitoring and observability - in modern IT environments. 
+
+Prometheus:
+	Open-source monitoring and alerting tools 
+	Collect, store, and query time-series data - typically metrics from application, infrastructure and systems.
+	
+	Key Features:
+		Metrics Collection:
+			They are used to collect metrics from various sources using a http based pull model.
+		
+		Time Series Database:
+			THe data is stored in an optimal manner in a time series based data storage system 
+		
+		Powerful Query Language:
+			We are using a powerful query language called PromQL to query the metrics and data from the time series based database 
+		
+		Alerting users:
+			We can integrate with Alertmanager to alert end users depending on any threshold that is crossed.
+		
+	Use Case:
+		It is useful to collect metrics or timestamped data from different sources using a http based pull model.
+		It is used to store in an optimal manner for querying, managing data 
+		It is also used to alert the users depending on the usage.
+		
+Grafana:
+	Grafana - open-source data visualization and analysis platforme 
+	It can visualize time-series based data from various sources - including Prometheus
+	
+	Key Features:
+		Dashboarding:
+			It helps in building interactive visualization or dashboards based on the data (time-based or not)
+			
+		Multiple Sources:
+			It allows multiple databases/ sources like InfluxDB, ElasticSearch, Prometheus
+		
+		Alerting:
+			It can alert end users whenever the thresholds are crossed.
+		
+		Flexible Querying:
+			It allows a flexibe querying methodology depending on the data source such as PromQL for Prometheus and DSL for ElasticSearch
+	
+	Use Cases:
+		Visualizing Metrics for infrastructure monitoring, tracking application performance, displaying real-time dashboards, and correlating data from multiple sources.
+
+How they work together:
+	Data flow;
+		The data is collected at Prometheus which serves as the engined and grafana is used to use this data engine to generate visualizations for the data to be monitored.
+	
+	Unified Monitoring:
+		The data is monitored at both Prometheus and grafana and alerted when crossing the thresholds but grafana provides additional visualization to support the easier monitoring of the data 
+
+What is monitoring and observability?
+	Monitoring:
+		Monitoring is collecting logs, metircs and information on the logs, performance of the system 
+		It is also used to alert the users based on the performance that happens in the logs 
+		It is focused on detecting and alerting issues when they occur 
+		It helps in creating prebuilt thresholds on the metrics that helps in identifying and handling expected issues.
+	
+	Observability:
+		Observability is the operation of using the logs that were monitored to gain insights about the system and system performance
+		It helps in gaining understaind of the internal performance and helps in handling unexpected issues 

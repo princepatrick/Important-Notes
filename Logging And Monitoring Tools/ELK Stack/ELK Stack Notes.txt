@@ -1,0 +1,77 @@
+The ELK Stack could be described as the combination of 3 technologies - ElasticSearch, Logstash, and Kibana. They allow to ingest, store, search, and visualize large amount of logs at the same time.
+
+ElasticSearch:
+	A highly scalable open-source search and analytics engine 
+	
+	What it does:
+		Data storage and indexing:
+			They are used to store the log data in a structured JSON based format and create indexes out of them. This allows for fast searches across huge datasets.
+		
+		Search and Analytics:
+			Powerful search capabilities using a rich querly language like (DSL)
+			It could handle both structured and unstructured data 
+		
+		Scalability and Distribution:
+			Built to scale horizontally by distributing data - across multiple nodes, high availability, and performance.
+	
+	Common Use Cases:
+		Storing logs, metrics, and time-series data, quick search and real time analytics.
+
+Logstash:
+	A robust data processing pipeline - ingests, transforms, and forwards data from various sources 
+	
+	What it does:
+		Data collection:
+			Collects data from various sources like logs, message queues, and databases
+			
+		Data transformation:
+			It can perform various filters like Grok, mutate and date to process and enrich the data 
+			For example it can convert the unstructured log messages into structured fields
+		
+		Data output:
+			Sends the processed fields into destinations like ElasticSearch for storage and search analysis.
+	
+	Common use cases:
+		Aggregate logs from various sources, cleaning up data, and transforming logs into a consistent structured format for analysis
+		
+Kibana:
+	A data visualization and exploration tool designed to work with ElasticSearch
+	
+	What it does:
+		Dashboarding and Visualization:
+			It helps to build dashboards with graphs, charts, maps and tables to visualize data from elasticsearch kind of sources.
+		
+		Search and Analysis:
+			Provides a way to query and search the logs in ElasticSearch. THey help you in providing queries and filters to the logs.			
+		
+		Real-time Monitoring:
+			Helps track monitoring system performance, track events, and identify anomalies in real-time 
+		
+Comparisons with Splunk:	
+	Splunk is a proprietory tool that helps to aggregate logs from various sources at the same time and create indexex into the logs.
+	Then uses these indices to search in an optimal manner 
+	Splunk also helps in monitoring or creating visualization from these indices 
+	
+		Why to prefer ELK over SPlunk
+			Splunk is similar to ELK the only problem is that Splunk is expensive due to it being proprietory
+
+Comparisons with Grafana/Prometheus Stack:
+	Grafana/Prometheus are complementary set of tools that is used to handle the monitoring data or metric data (which is basically timestamp based data since metrics are collected with respect to timestamps).
+	Prometheus is not suited to deal with logs kind of data, hence it is not suited to handle logging data. 
+	
+	The ELK stack with ElasticSearch and Logstash at the forefront is suited in processing logs while the Grafana/Prometheus stack helps in handling metrics.	
+	
+Comparisons with Grafana and Kibana:
+	Both grafana aned kibana are tools used for visualization of data providing a User interface for querying and visualizing the data. 
+	
+	Why to prefer Kibana and when Grafana?
+		The preference between kibana and grafana comes at the stack you are using. Kibana is well suited with ELK stack while grafana is compatible with any stack but is more suited with prometheus. Grafana can integrate with elasticsearch as well but it needs some well planned integration.
+
+Questions:
+	What does a rich query language mean by (DSL)
+		A rich-query language is a tool that provides a domain specific language (DSL) that helps you to server more than a simple key-value lookup 
+		Instead it helps in building queries and filters to create, manage and handle complex expressions
+		
+			ElasticSearch: A DSL helps in building multiple filters, specific aggregations, full-text searches, and manipulate scoring - using a single querying
+			
+			Prometheus: A query language PromQL helps you build filters, aggregate, and perform mathematical operations on time-seried data with a variety of functions.
