@@ -1511,12 +1511,672 @@ Issues faced during Dom Parser setup for spring security on 02/25?
 			The bearer token has a expiration time of 60 mins which was configured in applicaiton.properties
 			A very simple of getting a new token is to again make a call to "/authenticate" which will get us a new token which can be used for the future calls for the next 60 minutes or until the expiration time. 
 			Now making calls to the respective request /get-value/ with this token as the bearer token helps in making the calls to the necessary service.
+			
+	Authentication Error: 
+		Access blocked: Authorization Error
+
+		You can't sign in to this app because it doesn't comply with Google's OAuth 2.0 policy for keeping apps secure.
+
+		You can let the app developer know that this app doesn't comply with one or more Google validation rules.
+		Learn more about this error
+		If you are a developer of Sample App, see error details.
+		Error 400: invalid_request
+
+		Error 400: invalid_request
+		Request details: redirect_uri="http://localhost:8080/login/oauth2/code/google" flowName=GeneralOAuthFlow
+			Learnt:
+				The error is due to the setup of the client id where I had provided the  	
+
 	
+Spring OAuth Setup:
+	The Oauth setup of spring application requires creating a client id and secret key at Google API Console.
+	The steps to setup the client id is listed in: https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid
+	Again another setup steps from Chatgpt: https://chatgpt.com/share/67c3b224-f2b0-800b-90a9-55b4bd182e60
+
+Prompt 01:
+Web Dev General:
+	Give the 100 most common technical terminologies in web development in general?
+		like cookies, session and give the order in a way if I start searching them one by one I get an overall understanding of the most common technical terms to handle the software development overall.
+	
+		Possible Questions for later:
+			Document oriented vs key value DB 
+			ACID 
+			Indexing
+			Encryption vs Hashing
+			CSRF
+			XSS
+			CORS
+			Utility-first CSS
+			Reverse Proxy
+			Nginx
+			Minification 
+			Pagination
+			Web Accessibilty (A11y)
+			
+			Section 10:
+				Progressive Web Apps (PWAs)
+				Single Page Application (SPA)
+				Server Side Rendering (SSR)
+				Client Side Rendering (CSR)
+				WebAssembly (Wasm)
+				Headless CMS 
+				Edge Computing
+				AI, Blockchain, Metaverse and Web3
+
+
+Spring Security Notes:
+		https://chatgpt.com/share/67ce1435-7d40-800b-81ae-8eff82e43441
+		
+		What is spring security?
+			Spring security - powerful framework to securing spring applications 
+			Authentication, authorization and protection against CSRF attacks
+			Session-Fixation
+			Method level security 
+			
+		Give the most important components involved in spring security? Give in an architectural way such that I can learn spring security overall?
+			Architectural components of spring security:
+				Authentication Process 
+					It checks if the user is whome they claim to be. 
+						Important Components:
+							SecurityContext 
+							SecurityContextHolder
+							AuthenticationManager
+							ProviderManager
+							AuthenticationProvider 
+							Userdetailsservice
+				
+				Authorization Process:
+					Determines the person or user needs to be provided a particular access or not. 
+						Important Components:
+							AccessDecisionManager 
+							AccessDecisionVoter
+							GrantedAuthority
+							SecurityMetadataSource
+							@PreAuthorize, @PostAuthorize
+					
+				Filters:
+					Spring security is a filter-based protection.
+					You need to go through a bunch of filters before you can reach the application layer 
+					
+					Main Security Filters:
+						UsernameAndPasswordAuthenticationFilter
+						BasicAuthenticationFilter
+						BearerTokenAuthenticationFilter
+						SecurityContextPersistenceFilter
+						ExceptionTranslationFilter
+						CsrfFilter
+						LogoutFilter 
+				
+				Security Configuration:
+					XML based Configuration (older method)
+					Java based Configuration (Modern method) - @EnableWebSecurity()
+					SecurityContextFilters (since spring security 5.7)
+					
+					Key Classes and annotation:
+						@EnableWebSecurity()
+						SecurityFilterChain
+						HttpSecurity
+						AuthenticationManagerBuilder
+						PasswordEncoder: eg BcryptPasswordEncoder
+				
+				Oauth and Jwt:
+					Oauth2LoginConfigurer
+					JwtDecoder
+					JwtAuthenticationFilter					
+				
+				Additional Security Features :
+					CSRF protection - Prevents CSRF attack CsrfFilter
+					CORS Configuration - Manages cross origin requests (CORS)
+					SesseionManagement
+					MethodSecurity
+					
+		Architectural Diagram:
+			User -> Security Filters -> AuthenticationManager -> AuthenticationProvider -> UserDetailsService -> application 
+			
+		Conclusion: 
+			To configure spring security do the following:
+				Configure SecurityFilterChain 
+				Configure Userdetailsservice
+				Use jwt or Oauth2 depending on needs 
+				Apply security annotations for finer control				
 			
 			
+	
+	JWT related: 
+	JWT:
+		What is the steps involved in a JWT process - done already 
+		What is a bearer token
+			A bearer token is used for authentication and authorization
+			Its called bearer token - since it allows every bearer the authentication into the application or resource they are requesting
+			It is usually added in the Headers of the Authorization section of the request 
+			It is usually represented using a JWT - Json Web Token 
+			
+		Why is it suitable for Rest based calls 
+			It is suited with REST based calls due to stateless and compact nature 
+			Stateless Authentication:
+				REST prefers to have all the authentication information in each request so that they are stateless in nature 
+				Bearer token is suited since it contains both - Authentication information and time for which the session should be present 
+			
+			Compact and Fast:
+				It is compact, url safe, reducing overhead when transmitted with the Http request headers 
+			
+			Scalability:
+				Since the authentication is handled by tokens instead of servers, JWT is ideal for distributed and microservice-based architectures
+				
+			Secure and Signed:
+				Digitally signed using algorithms - HMAC-SHA256  or RSA - ensuring data integrity
+				They can be additionally encrypted for additional security.
+			
+			
+		What advantages JWT has over others and what are the possible drawbacks 
+			JWT 
+				Stateless
+				Highly Scalable
+				Compact 
+				Cross-domain support 
+				Highly secure( if properly signed and stored)
+			
+			Session based Authentication
+				Not Stateless 
+				Not scalable
+				Not compact 
+				does not support Cross domain support
+				It is secure except CSRF
+				
+			Oauth (Opaque Tokens)
+				Stateless
+				Highly scalable 
+				Usually Larger 
+				supports cross-domain 
+				Secure but requires token validation
+				
+		What is drawbacks of JWT:
+			No built-in revocation:
+				If a JWT expires - we cannot readly invalidate a JWT 
+				instead for session based authentication - we can readily terminate teh access from the server 
+				
+				Solution:
+					The blacklisting of the JWT tokens - using database or a redis server.
+					
+			Larger token size:
+				JWTs - contain header, payload and signatures - making them larger than the general session ids.
+			
+			Potential Security Risks:
+				If stored in localstorage - an XSS (cross-site scripting) can steal it 
+				If used in log parameters - it can be logged and exposed. 
+			
+		What is a token in Jwt 
+			A jwt token - self-contained string with - authentication and authorization claims 
+			It contains 3 parts
+			Header.Payload.Signature 
+			
+			eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwiZXhwIjoxNjk3MTU4NzAwfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_w1gRfs2B4m2M
+			
+			1. Header 
+			contains - metadata like algorithm - H256, R256
+			{
+				"alg"	: "H256",
+				"typ" : "JWT"
+			}
+			
+			2. Payload claims Base64 encoded json 
+			{
+				"userId" : "1234567890",
+				"exp" : 1697158700
+			}
+			
+			3. Signature 
+			Ensures token integrity, preventing tampering
+			
+			
+		Conclusion:
+			Secure and stateless 
+			suited for REST 
+			It offers scalability and efficiency but revocation and storage security must be managed properly
+			Suited for microservices and distributed authentication
+			
+			
+			Followup questions:
+				Why is it good for CSRF when session based authentication is not good for CSRF 
+				
+			
+	
+	Oauth related:
+	Oauth2.0:
+		What is Oauth2.0? - done in "Spring OAuth Setup"
+		What is Google Oauth2.0 setup process? done in "Spring OAuth Setup"
+		
+		For the below:https://chatgpt.com/share/67ce6c5a-0ae8-800b-b0e5-34cdd47354da
+		
+		What is Google Client-id and secret
+			A google client-id is the public identifier for your device 
+			A Google secret is the password for your device 
+			They are generated using Google cloud console when registering using Oauth 2.0 credentials
+			
+		What is Google Authorized Javascript Origins and Authorized Redirect URIs
+			Google Authorized Javascript Origins:
+				Used when implementing Oauth with Javascript (Web browser based apps)
+				Restricts authentication requests to specifed domains 
+				THis helps in preventing Cross-site Request Forgery attacks (CSRF attacks)
+			
+			Authorized Redirect URIs:
+				Specifies where Google needs to send the authenticated resource to
+				They have authorization code or access token to be sent 
+				Used in Oauth based server side apps 
+				Redirect URIs - should match exactly registered ones in Google Cloud Console 
+				
+		What is a google Oauth Authorized Domains
+			THe domains from which google allows the web application to proceed 
+			If you are having a web application that needs to use Google authentication - then it should follow the provided authorized domain 
+			To use Google sign-in the domain must be verified by Google console. 
+			
+		Give a brief intro on the rules for the Authorized javascript origins 
+			
+		What are scopes? What are the type of scopes?
+	
+SOAP and REST basics - overview, and comparison:
+	https://chatgpt.com/share/67ce80a4-0fd4-800b-8619-3f0b28308def
+	
+	What is SOAP? Give a brief introduction? What are advantages and disadvantages of SOAP service calls?
+		Introduction:
+			SOAP - Simple Object Access Protocol
+			Helps in transferring structured information through the network 
+			It is based on XML, platform independent and strict standard. 
+			Uses standard protocols like HTTP, SMTP, TCP
+			Supports WS-Security - critical for security and reliability 
+		
+		Advantage of SOAP service calls:
+			Platform and Language Independence:
+			Security - uses WS-Security
+			Reliable messaging - Uses WS-ReliableMessaging
+			Protocol Independence - Can operate over HTTP, SMTP, TCP 
+			Extensibility - SOAP allows additional features like WS-specifications
+			Stateful support - Can maintain session and transaction states 
+		
+		Disadvantage of SOAP service calls:
+			Overhead due to XML: Since XML tends to be bigger we are getting into overhead to xmls
+			Slower Performance: XML parsing takes more time than JSON parsing 
+			Complexity: More complex than REST requires WSDL for service definition
+			Tight Coupling: clients are coupled with the WSDL making the changes in the request more harder to implement.
+			Limited Browser Support: relatively lesser support with browsers when compared to REST.
+		
+	Conclusion:
+		High security, transactional integrity, and reliability - SOAP is good 
+		For lightweight and fast services - prefer REST 
+		
+	Explain the important components and terms involved like WSDL, WS-Security, WS-ReliableMessaging, WS-specifications etc.
+	What is Rest? Give a brief introduction? What are advantages and disadvantages of REST service calls?
+	Give a detailed comparison between REST and SOAP
 
 
+Slf4j Related:
+	What is Slf4j? What are the uses of using Slf4j?
+		Slf4j is an logging framework that abstracts the particular implementation of the logging that is currently used.
+		There are various logging approaches like logback, java.util.logging, and Log4j each has it's own way of logging the text in the console. If we need to implement a particular logging method we might need to implemnent the code based on the logging framework's code base. 
+		Lets say we started with one logging implementation and we need to move to a different type then we might need to change the code again. 
+		What Slf4j does it provides an abstraction that makes it suitable to change the logging implementation at runtime.
+		
+		General features:
+			Logging Abstraction:
+				As discussed above, there are various logging methods that are supported like logback, java.util.logging, Log4j. 
+				If we need to have one implementation that abstracts and suppports the other implementations in a generic version.
+			
+			Default Logging in Spring Boot:
+				The default logging in Spring Boot is Logback - which is compatible with Slf4j
+				If we need to change the default configurations (like what it should contain) we can use - logback.xml or application.properties 
+			
+			Structured and Consistent Logging:
+				Slf4j supports parametrized logging which optimizes spring concatenation and improves performance:
+				Code:
+					logger.info("User {} logged in from IP {}", username, ipAddress);
+					
+			Integration with External Libraries:
+				Basically java has the support for various logging libraries like - logback, java.util.logging, Log4j 
+				But there are various external libraries for logging like Apache Commons Logging etc. Slf4j has support for these libraries as well. 
+				Hence it is suited.
+			
+			Supports MDC( Mapped Diagnostic Context):
+				It helps in adding contextual information to logs which helps in logging in a distributed environment
+			
+			Better performance with Asynchronous Logging:
+				It supports Asynchronous logging - which is better for high-throughput applications.
+		
+		General Steps to Add a Logger with Slf4j:
+			1. Adding the necessary dependency to setup or add the Slf4j logger:
+			2. In the particular class where you want to log:
+				//Create a logger object from the LoggerFactory
+				//Using the logger object we create logs like logger.info() or logger.debug()
+			3. In the application.properties we setup the properties that sets up the logger level, logger path, logger file's name
+			
+		What is Mapped Diagnostic Context?
+			Mapped Diagnostic Context is a feature provided by Slf4j. 
+			It helps in logging the information of context ie the user, service, thread, or request that is doing the current operation.
+			This helps in monitoring or understanding which was the user/service/thread/request that made the particular call in any common implementation.	
 
+			When and why to use MDC:
+				Log Traceability: We can understand what exactly happened in a code flow 
+				Multi-user environment: When multiple users operate with the same code then we will get to know which user had performed the particular operation.
+				Multi-threaded environment: When multiple threads perform a particular operation. We will get to know the thread that performed the operation. 
+				Microservices environment: The microservices architecture that points out the service that had done the action.
+			
+			How MDC Works?
+				MDC stores the contextual data in a thread local variable.
+				The stored variable is logged when it is referenced in the logger.
+				
+				Question:
+					So when we login doing some operation the content is stored in MDC context but if we logout and come back again the information stored in MDC context will be lost is this correct. The only way to handle this would be to store some relevant info in the DB and then get the value back during the runtime. Is this correct.
+			
+			Using MDC in a Spring Boot Application:
+				Add Dependencies:
+					Should be the same dependencies that we used for SLF4J
+				
+				Add the usage of Slf4j in the class:
+					import org.sf4j.MDC
+					
+					@RestController
+					@RequestMapping
+					public class ControllerClass{
+						private static final Logger logger = LoggerFactory.getLogger(LoggingController.class);
+						
+						@GetMapping("/log")
+						public String logExample(@RequestParam message){
+							MDC.put("userId", userId);
+							MDC.put("requestId",UUID.randomUUID().toString());
+							
+							logger.info("Processing for User");
+							MDC.clear();
+							return "Check the logs";
+						}
+					}
+					
+				Configuring the logback to use MDC:
+					<configuration>
+						<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+							<encoder>
+								<pattern>[%d] [%X{requestId}] [%X{userId}] %-5level %logger{36} - %msg%n </pattern>
+							</encoder>
+						</appener>
+						
+						<root level="INFO">
+							<appender-ref ref="STDOUT"/>
+						</root>
+					</configuration>
+				
+				Using MDC in Async and Multi-threaded Applications:
+					@Service
+					public Async AsyncService{
+						private static final Logger logger = LoggerFactory.getLogger(AsyncService.class);
+						
+						@Async
+						public void asyncMethod(){
+							String requestId = MDC.get("requestId");
+							logger.info("Executing async task with requestId: {}", requestId);
+						}
+					}
+			
+			When to use MDC?
+				Microservices logging:
+				Multi-user Applications:
+				Background/Async Processing:
+				Debugging and Auditing:
+				
+		How is Asynchronous Logging different from Synchrnonous Logging? What concerns should we take into consideration? Why does high-throughput applications needs Asynchronous processing and Asynchronous Logging?
+			Logging - debugging, analyzing, understanding what was the flow and what happened in the application.
+			Logging - synchronously or asynchronously can impact systems in many ways. 
+			
+			Synchrnonous Logging:
+				At synchronous logging - each line is printed before the next line is logged before the next line in the code execution can begin. 
+				Every statement is executed using the application's main execution thread. 
+				App waits till the logging is complete before proceeding to the next executing line or code in the app.
+				
+				Advantages:
+					No messages are lost 
+					Messages are written in order 
+					They are simple to implement 
+					
+				Disadvantages:
+					There could be a huge overhead on the application - Logging is an intensive process involving - I/O calls, network calls, and file writing that slows down the application.
+					Blocking Nature - It tends to block out the application - and the next line waits till the current line of the logging thread is processed.
+					It is not suitable for realtime - high throughput applications 
+			
+			Asynchronous Logging:
+				In logging the log statements are placed at a separate queue buffer.
+				We have a separate thread called - logging thread that picks the message from the queue and executes the logging lines 
+				The main thread is left intact, hence proceeds with the general functioning of the application.
+				
+				Advantages:
+					It improves the performance since the since the main thread does not work with the messages anymore and could operate with the app code 
+					It is suited for applications that demand high scalability.
+					Efficiently uses the resources
+					
+				Disadvantages:
+					Potential Message Loss: It leads to potential message loss as message is handled by separate threads and the failure of logging thread could stop the logging statement from running but the application thread could move forward leading to a future scope which has not been recorded yet.
+					Printed in different order: Since the added logs are implemented in the buffer and written separately, the logs might be written in different orders.
+					Extra Memory: The queue requires extra space and some improper sizing could lead to delays.
+			
+			Advantages and essential nature of Asynchronous processing and Asynchronous logging in Real time systems, Microservices etc.,
+				Asynchronous Processing:
+					Minimizes thread blocking 
+					Handles concurrent requests 
+					Essential for microservices 
+					
+				Asynchronous Logging:
+					Reduces logging overhead
+					Supports concurrent threads 
+					Enhances performances 
+			
+			<configuration>
+				<appender name="ASYNC">
+					<appender-ref ref="FILE">
+				</appender>
+				
+				<appender name="FILE">
+					<file></file>
+					<encoder>
+						<pattern></pattern>
+					</encoder>
+				</appender>
+				
+				<root level="INFO">
+					<appender-ref ref="ASYNC">
+				</root>
+			</configuration>
+					
+				
+			
+		What does it mean by a "facade"? Can you explain?
+			A Facade is used to create a simplified and unified interface on top of complex systems like Classes, libraries, or APIs
+			Acts as a wrapper on top of set of functionalities and providing a simple interface for end users.
+			
+			Key Characteristics of a Facade:
+				Simple Interface: The user is faced with a simplified interface calls only for the actions that they want to do with the application and are not exposed to the implementations 
+				Reduces complexity: It reduces the complexity as the end user is not exposed to the implementation to the user 
+				Reduces dependencies: The client code is decoupled from the implementation hence any changes to the implementation does not impact the client instead they are only aware of the actions they could request 
+				Improves Maintainability: It improves maintainability because the implementation can be improved without the client being aware of the changes that were done.
+			
+			Example of a Facade in Real life:
+				When we go to a hotel to book a room, 
+					We simply goes to the receptionist and ask for a room 
+						The receptionist collects the details from you about the type of room you want
+						The receptionist finds a suitable room 
+						The receptionist confirms it with you and ask for advance and adds into the billing portal handled by the billing team 
+						The receptionist calls the room service guy to go and clean that room 
+						The receptionist calls the helper to handle your luggage and deliver them in your room 
+						The receptionist hands over the keys of the room to you 
+					
+					The receptionist is the facade. 
+						The receptionist does not collect your details and ask you to go to the billing team 
+						The billing team does not collect your payment and redirect you to the room of the Room Service Men 
+						The Room service men does not clean the room and then ask you to go to the helpers room who can help carry your luggage 
+						The helper does not redirect you to the receptionist to get the keys 
+				
+				A facade simply asks the end user to make an operation or ask for an action and facade should handle the implementation of the action instead of directing and giving directions to the end user about the directions to take.
+				
+			Two examples of a facade:
+				The Slf4j is a simple facade for you to log the content without knowing the particular implementation of the logger like - java.util.logging, Logback, Log4j 
+				
+				The other example is an Audio system that has various complex subsystems like Amplifier, CDPlayer and Speakers 
+				
+				public class Amplifier{
+					public void on(){ sout("Turn on the system"); }
+					public void setVolumne( int volume : defaultVolume ){ sout("Volume set to" + volume);}
+				}
+				
+				public class CDPlayer{
+					public void play(String cd){ sout("Play the cd: " + cd); }
+				}
+				
+				public class Speakers{
+					public void setMode( String mode : defaultAudioMode ){ sout("Playing the speakers with the mode: " + mode);}
+				}
 
+				public class HomeTheaterFacade{
+					Amplifier amplifier;
+					CDPlayer cdPlayer;
+					Speakers speaker;
+					
+					construct HomeTheaterFacade( Amplifier amplifier, CDPlayer cdPlayer, Speakers speaker ){
+						this.amplifier = amplifier;
+						this.cdPlayer = cdPlayer;
+						this.speaker = speaker;
+					}
+					
+					public void playMovie(){
+						sout("Ask movie name");
+						String movieName = getName();
+						amplifier.on();
+						amplifier.setVolume();
+						speaker.setMode();
+						cdPlayer.play(movieName);						
+					}
+				}
+			
+			When to use a facade:
+				Complex system or subsystems 
+				Decouple a client from the underlying service implementation 
+				Need a standardized APIs for the system 
+					
+		
+	How to setup logs configuration using Slf4j in Spring boot? What are the ways in setting up the logs lets say with java.util.Logging and Logback?
+		Default logging is at level DEBUG 
+		Hence any logging level lesser than DEBUG will not be printed 
+		
+		Configuring logs at Spring Boot:
+			Default Logback:
+				
+				We can by default at applicaiton.properties for the default configuration:
+					application.properties:
+						logging.level.root=INFO 
+						logging.level.org.springframework=DEBUG
+						logging.level.com.example=TRACE 
+						
+						logging.file.name=logs/app.log 
+						logging.file.path=logs 
+						
+						logging.pattern.console=%d{yyyy-mm-dd} - %msg%n 
+					
+					The application.properties configures the logging level of the root project at INFO, the spring related logs at DEBUG level and the program related logs at TRACE 
+					
+			Custom Logback:
+				Using logback.xml using custom logback configuration:
+					logback.xml at src/main/resources/
+					
+					<configuration>
+						<appender>
+							<encoder>
+								<pattern>
+							</encoder>
+						</appender>
+						
+						<appender>
+							<file>application.log</file>
+							<encoder>
+								<pattern>
+							</encoder>
+						</appender>
+						<root level="INFO">
+							<appender-ref name="STDOUT">
+							<appender-ref name="FILE">
+						</root>
+						
+						<logger name="com.example" level="DEBUG">
+					</configuration>
+				
+			Java.util.Logging(JUL):
+				1. Exclude logback from the application:
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-logging</artifactId>
+						<scope>provided</scope>
+					</dependency>
+				
+				2. Add Slf4j and jul-to-slf4j bridge:
+					<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>jul-to-slf4j</artifactId>
+					<dependency>
+				
+				3. Initialize JUL Bridge in main()
+					import java.util.logging.LogManager;
+					
+					import org.slf4j.bridge.SLF4JBridgeHandler;
+					
+					public class Logging{
+						public static void setup(){
+							LogManager.getLogManager.reset();
+							SLF4JBridgeHandler.install();
+						}
+					}
+				
+			Log4j2 with Slf4j 
+				Exclude logback from dependency 
+				
+				Add log4j2 dependency:
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-log4j2</artifactId>
+					</dependency>
+					
+				Add a log4j2.xml similar to logback.xml 
+					<Configuration status="WARN">
+						<Appenders>
+							<!-- Console Appender -->
+							<Console name="Console" target="SYSTEM_OUT">
+								<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p %c{1} - %m%n"/>
+							</Console>
+
+							<!-- File Appender -->
+							<File name="File" fileName="logs/app.log">
+								<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p %c{1} - %m%n"/>
+							</File>
+						</Appenders>
+
+						<Loggers>
+							<!-- Set Log Levels -->
+							<Root level="INFO">
+								<AppenderRef ref="Console"/>
+								<AppenderRef ref="File"/>
+							</Root>
+
+							<Logger name="com.example" level="DEBUG"/>
+						</Loggers>
+					</Configuration>
+			
+			Conclusion:
+				LogBack:
+					Default at Spring 
+					Could be customized using logback.xml 
+				
+				Java.util.logging:
+					Not default requires Jul-to-Slf4j Bridge 
+					java.util.logging with Slf4j 
+				
+				Log4j2:
+					Hanlded in log4j2.xml file 
+			
+			
+			
+						
+					
 
 

@@ -1,0 +1,108 @@
+Design Patterns:
+	Give a brief intro on the design patterns involved in software engineering and describe the most important of them
+		
+		Claude AI details for all design patterns from Factory method: https://claude.ai/share/01f91483-5f50-475c-a3b1-e391f2078b36
+	
+		Design patterns are the some common solutiosn or architectures that are commonly used in SWE for some repeated and common problems 
+		They support - maintainability, scalability, and reusability
+		
+		The design patterns that are best are:
+			Creational: Object creation mechanism, optimizing the object creation process 
+			Structural: Focus on composing classes to fit the larger structure 
+			Behavioral: Define how objects interact and communicate with each other 
+		
+		Most Important Design Patterns:
+			Singleton (Creational):
+				Ensures a class has only one instance and provides a global access to it.
+				Example: Database Connection Management 
+			
+			Factory (Creational):
+				It is a class that uses an interface and the specific subclass to choose the implementation that is needed.
+				Example: 
+					Vehicle Interface,
+					Car - Class one implementation 
+					Truck - Class another implementation 
+					VehicleFactory 
+						createVehicle(String type){
+							if( type == "Car") return new Car();
+							elseif( type == "Vehicle") return new Vehicle();
+						}
+			
+			Builder(Creational):
+				It helps separate the construction process away from the actual representation of the objects:
+					What uses:
+						It helps in avoiding class explosion - Lets say has 4 properties with 3 options each if you have implementation for each then you need 81 classes 
+						It helps in providing different order of addign the objects to the class:
+							Builder.addUrl().addHeader.addAuth() etc 
+						It helps in providing partial constructor 
+							Builder.addUrl().addHeader() only 
+							In Classes you need multiple constructors 
+						And few other reasons 
+					When to use Inheritance instead of builder:
+						When the different implementatiosn are inherently different things instead of just difference in configuration then inheritance would be preferable.
+			
+			
+			Adapter(Structural):
+				Allows incompatible interfaces to work together as a bridge. 
+				Example: Connecting a legacy system with a modern API 
+					Lets say the client code only supports MP3 format 
+					But a new API comes that supports both MP4 and AVI format of music.
+					Then we need to make our local system work with the advacned format .
+					
+					For this you can create a new adapter that connects both the systems using the adapter as a bridge 
+					
+					An example implementation is as follows:
+						interface MediaInterface(){
+							void play();
+						}
+						
+						interface AdvancedMediaInterface(){
+							void playMP4();
+							void playAvi();
+						}
+						
+						class MP4Player implements AdvancedMediaInterface(){
+							void playMP4(){
+								sout("Play MP4");
+							}
+							
+							void playAvi(){
+								//Null implementation
+							}
+						}
+						
+						class AviPlayer implements AdvancedMediaInterface(){
+							void playMP4(){
+								
+							}
+							
+							void playAvi(){
+								sout("Play AVI foramt");
+							}
+						}
+						
+						class MediaAdapter implements MediaInterface(){
+							
+							construct MediaAdapter(){
+							
+							}
+							
+							void play(){
+							
+							}
+						}
+						
+			Decorator(Structural):
+				If you want to add new behavior to classes at runtime instead of adding the new behavior as concrete classes in the code.
+				
+					It helps in adding properties at runtime 
+					It does not need class implementations 
+				
+			Observer(Behavioral):
+					Defines a dependency between objects such that if one object changes - all it's dependents are notified automatically
+					
+					Example: Event Listeners in UI frameworks
+				
+			Command (Behavioral):
+				Converts the request into an object.
+				Allows the decoupling of the client code and the server code through the object creation methodology.
