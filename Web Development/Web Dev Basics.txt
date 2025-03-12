@@ -1,0 +1,24 @@
+Questions:
+
+Hashing vs Encryption:
+Marshalling vs Serialization:
+Concurrency vs Parallelism:
+So there is no possibility of race condition in atomic operation:
+How is hashing useful in verfification
+Why cant a hacker change the data that I am downloading and also change the checksum at the same time. If so, how does checksum help.
+Learn about webhooks more
+Learn about Immutability this is something of a pain for long
+Is atomicity about running a process and stopping other process from working at the same time, or making sure a resource is not shared by the other processes at the same time, or not pausing and going to another task until this one completes.
+Webhooks vs Websockets
+What is Jackson is used for 
+Describe the top 20 libraries used in Java like Jackson and how are they different from the starters
+What is Reflections in this context of logstash logs - Reflections took 122 ms to scan 1 urls, producing 152 keys and 530 values
+What is sincedb_path
+Explain JVM Bootstrap flags:
+Explain the following: 
+JVM bootstrap flags: [-Xms1g, -Xmx1g, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djruby.compile.invokedynamic=true, -XX:+HeapDumpOnOutOfMemoryError, -Djava.security.egd=file:/dev/urandom, -Dlog4j2.isThreadContextMapInheritable=true, -Dlogstash.jackson.stream-read-constraints.max-string-length=200000000, -Dlogstash.jackson.stream-read-constraints.max-number-length=10000, -Djruby.regexp.interruptible=true, -Djdk.io.File.enableADS=true, --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED, --add-opens=java.base/java.security=ALL-UNNAMED, --add-opens=java.base/java.io=ALL-UNNAMED, --add-opens=java.base/java.nio.channels=ALL-UNNAMED, --add-opens=java.base/sun.nio.ch=ALL-UNNAMED, --add-opens=java.management/sun.management=ALL-UNNAMED, -Dio.netty.allocator.maxOrder=11]
+
+
+
+75 Web dev Concepts:
+	https://claude.ai/share/b355ed68-41f0-44a3-9283-c8fdc910dd1d

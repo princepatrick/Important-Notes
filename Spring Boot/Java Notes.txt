@@ -2,6 +2,17 @@
 Java Top Concepts, Static, Interface, and Abstract Classes
 https://chatgpt.com/share/67bd31d2-39f4-800b-8f3c-fd7a1daa925c
 
+Some errors in Java:
+	Code:
+		public DomParserException( String message ){
+			logger.error("We are facing errors at the DomParserException class with the error message " + message );
+			super(message);
+		}
+		
+		Error:
+			The call to super() should be the first method in the constructor.
+			Fix is to move the super(message) above the logger.error();			
+			
 Easy Concepts:
 	Class
 	Object
@@ -156,4 +167,13 @@ Hard:
 	Class Versioning and Compatibility Issues
 	Advanced Exception Handling Patterns (chained exceptions)
 	HotSpot VM Internals
-	Microbenchmarking Pitfalls in Java
+	Microbenchmarking Pitfalls in Java 
+	
+	
+Java Questions Thread: https://claude.ai/share/eafbbfb4-3abf-4783-85c4-f5d44f29fa79
+	JDK vs JRE vs JVM 
+	Is Java platform independent. Exploring it and checking other languages on platform independence
+	Checking how C/C++ is  deployed in real life
+	How is portability of Java useful in real life 
+	Compilers vs Interpretes based programming
+	
