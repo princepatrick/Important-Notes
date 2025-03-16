@@ -59,3 +59,13 @@ What is monitoring and observability?
 	Observability:
 		Observability is the operation of using the logs that were monitored to gain insights about the system and system performance
 		It helps in gaining understaind of the internal performance and helps in handling unexpected issues 
+		
+Prometheus:
+	Setting up Prometheus: https://claude.ai/chat/a4b45ae5-0a9d-4987-b0f1-396d247a0105
+	Prometheus Notes: https://claude.ai/chat/0b06b2ac-5112-45cf-b445-2bb966ad48b7
+	
+Grafana:
+	Setting up Grafana: 
+	Grafana Notes: https://claude.ai/chat/aca1f268-d254-43d7-a3ef-a83d4acabf1c
+	Possible Questions:
+		data source proxy, 

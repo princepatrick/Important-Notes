@@ -371,3 +371,5 @@ Setting up Kibana:
 	Steps and details: https://claude.ai/share/0865fb26-11be-4032-a554-d8dad3e39c77
 	Kibana Architecture: https://claude.ai/share/13b474a2-8e21-493a-aac6-48735f486576
 
+Integrating Spring Boot with Logstash:
+	
